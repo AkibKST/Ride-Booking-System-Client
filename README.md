@@ -144,5 +144,7 @@ Accessible without authentication:
 5. **Credentials**
    - Provide admin/driver/rider login details (email & password) for testing
 
-Author :
-Akibul Islam
+
+### **Author**
+### **Akibul Islam**
+
