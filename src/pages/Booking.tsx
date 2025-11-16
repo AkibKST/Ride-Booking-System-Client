@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useCreateBookingMutation } from "@/redux/features/booking/booking.api";
-import { useGetAllToursQuery } from "@/redux/features/tour/tour.api";
+import { useGetAllToursQuery } from "@/redux/features/ride/ride.api";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 

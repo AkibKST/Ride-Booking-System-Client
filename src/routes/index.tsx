@@ -12,12 +12,12 @@ import { userSidebarItems } from "./userSidebarItems";
 import { withAuth } from "@/utils/withAuth";
 import { role } from "@/constants/role";
 import type { TRole } from "@/types";
-import Tours from "@/pages/Tours";
 import Homepage from "@/pages/Homepage";
-import TourDetails from "@/pages/TourDetails";
 import Booking from "@/pages/Booking";
 import Fail from "@/pages/Payment/Fail";
 import Success from "@/pages/Payment/Success";
+import Rides from "@/pages/Rides";
+import RideDetails from "@/pages/RideDetails";
 
 export const router = createBrowserRouter([
   {
@@ -33,12 +33,12 @@ export const router = createBrowserRouter([
         path: "about",
       },
       {
-        Component: Tours,
-        path: "tours",
+        Component: Rides,
+        path: "rides",
       },
       {
-        Component: TourDetails,
-        path: "tours/:id",
+        Component: RideDetails,
+        path: "rides/:id",
       },
       {
         Component: withAuth(Booking),

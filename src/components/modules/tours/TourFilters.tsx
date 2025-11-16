@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
-import { useGetTourTypesQuery } from "@/redux/features/tour/tour.api";
+import { useGetTourTypesQuery } from "@/redux/features/ride/ride.api";
 import { useSearchParams } from "react-router";
 
 export default function TourFilters() {

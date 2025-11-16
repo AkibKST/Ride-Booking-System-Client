@@ -27,7 +27,7 @@ import { Fragment } from "react/jsx-runtime";
 const navigationLinks = [
   { href: "/", label: "Home", role: "PUBLIC" },
   { href: "/about", label: "About", role: "PUBLIC" },
-  { href: "/tours", label: "Tours", role: "PUBLIC" },
+  { href: "/rides", label: "Rides", role: "PUBLIC" },
   { href: "/admin", label: "Dashboard", role: role.admin },
   { href: "/admin", label: "Dashboard", role: role.superAdmin },
   { href: "/user", label: "Dashboard", role: role.user },
@@ -100,7 +100,7 @@ export default function Navbar() {
                           </NavigationMenuLink>
                         </NavigationMenuItem>
                       )}
-                      {link.role === userdata?.data?.role && (
+                      {link.role === userdata?.data?.data?.role && (
                         <NavigationMenuItem key={index} className="w-full">
                           <NavigationMenuLink asChild className="py-1.5">
                             <Link to={link.href}>{link.label}</Link>
@@ -134,7 +134,7 @@ export default function Navbar() {
                         </NavigationMenuLink>
                       </NavigationMenuItem>
                     )}
-                    {link.role === userdata?.data?.role && (
+                    {link.role === userdata?.data?.data?.role && (
                       <NavigationMenuItem key={index}>
                         <NavigationMenuLink
                           asChild
@@ -153,7 +153,7 @@ export default function Navbar() {
         {/* Right side */}
         <div className="flex items-center gap-2">
           <ModeToggle />
-          {userdata?.data?.email ? (
+          {userdata?.data?.data?.email && (
             <Button
               onClick={handleLogout}
               variant="outline"
@@ -162,7 +162,8 @@ export default function Navbar() {
             >
               Log out
             </Button>
-          ) : (
+          )}
+          {!userdata?.data?.data?.email && (
             <Button asChild size="sm" className="text-sm">
               <Link to="/login">Log In</Link>
             </Button>

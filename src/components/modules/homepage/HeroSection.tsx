@@ -1,93 +1,43 @@
+import { ExternalLink } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import Logo from "@/assets/icons/Logo";
-import { Link } from "react-router";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
-import { useState } from "react";
 
-export default function HeroSection() {
-  // state to hold selected division for filtering
-  const [selectedDivision, setSelectedDivision] = useState<string | undefined>(
-    undefined
-  );
-
-  // fetch divisions for select options
-  const { data: divisionData } = useGetDivisionsQuery(undefined);
-
-  // map fetched data to select division options
-  const divisionOption = divisionData?.map(
-    (item: { _id: string; name: string }) => ({
-      label: item.name,
-      value: item._id,
-    })
-  );
-
+const HeroSection = () => {
   return (
-    <section className="relative overflow-hidden py-32 min-h-screen">
-      <div className="absolute inset-x-0 top-0 flex h-full w-full items-center justify-center opacity-100">
-        <img
-          alt="background"
-          src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/patterns/square-alt-grid.svg"
-          className="[mask-image:radial-gradient(75%_75%_at_center,white,transparent)] opacity-90"
-        />
-      </div>
-      <div className="relative z-10 container mx-auto">
-        <div className="mx-auto flex max-w-5xl flex-col items-center">
+    <section className="relative overflow-hidden py-24 mx-auto">
+      <div className=" relative z-10">
+        <div className="mx-auto flex max-w-full flex-col items-center">
           <div className="flex flex-col items-center gap-6 text-center">
-            <div className="rounded-xl bg-background/30 p-4 shadow-sm backdrop-blur-sm">
-              <Logo />
+            <div className="bg-background/30 rounded-xl p-4 shadow-sm backdrop-blur-sm">
+              <Logo></Logo>
             </div>
             <div>
-              <h1 className="mb-6 text-2xl font-bold tracking-tight text-pretty lg:text-5xl">
-                Explore the beauty of{" "}
-                <span className="text-primary">Bangladesh</span>
+              <h1 className="mb-6 text-pretty text-2xl font-bold tracking-tight lg:text-5xl">
+                Welcome to{" "}
+                <span className="text-primary">Encrypted Service</span>
               </h1>
-              <p className="mx-auto max-w-3xl text-muted-foreground lg:text-xl">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Elig
-                doloremque mollitia fugiat omnis! Porro facilis quo animi
-                consequatur. Explicabo.
+              <p className="text-muted-foreground mx-auto max-w-3xl lg:text-xl">
+                Here at Encrypted Service, we prioritize your privacy and data
+                security above all else. Our platform is designed to provide
+                top-notch ride sharing services while ensuring that your
+                personal information remains confidential and protected.
               </p>
             </div>
             <div className="mt-6 flex justify-center gap-3">
-              <Select onValueChange={(value) => setSelectedDivision(value)}>
-                <SelectTrigger className="w-[300px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Divisions</SelectLabel>
-                    {divisionOption?.map(
-                      (item: { value: string; label: string }) => (
-                        <SelectItem key={item.value} value={item.value}>
-                          {item.label}
-                        </SelectItem>
-                      )
-                    )}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-
-              {/* Search Button with Division Filter */}
-              {selectedDivision ? (
-                <Button asChild>
-                  {/* Link with tour page division filter */}
-                  <Link to={`/tours?division=${selectedDivision}`}>Search</Link>
-                </Button>
-              ) : (
-                <Button disabled>Search</Button>
-              )}
+              <Button className="shadow-sm transition-shadow hover:shadow">
+                Request a Ride
+              </Button>
+              <Button variant="outline" className="group">
+                Register as a Driver{" "}
+                <ExternalLink className="ml-2 h-4 transition-transform group-hover:translate-x-0.5" />
+              </Button>
             </div>
           </div>
         </div>
       </div>
     </section>
   );
-}
+};
+
+export { HeroSection };

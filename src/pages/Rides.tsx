@@ -1,10 +1,10 @@
 import TourFilters from "@/components/modules/tours/TourFilters";
 import { Button } from "@/components/ui/button";
-import { useGetAllToursQuery } from "@/redux/features/tour/tour.api";
+import { useGetAllToursQuery } from "@/redux/features/ride/ride.api";
 
 import { Link, useSearchParams } from "react-router";
 
-export default function Tours() {
+export default function Rides() {
   // get search params from url for filtering
   const [searchParams] = useSearchParams();
 
@@ -82,7 +82,7 @@ export default function Tours() {
               </div>
 
               <Button asChild className="w-full">
-                <Link to={`/tours/${item._id}`}>View Details</Link>
+                <Link to={`/rides/${item._id}`}>View Details</Link>
               </Button>
             </div>
           </div>

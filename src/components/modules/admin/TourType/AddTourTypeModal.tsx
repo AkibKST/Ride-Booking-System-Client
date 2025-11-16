@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useAddTourTypeMutation } from "@/redux/features/tour/tour.api";
+import { useAddTourTypeMutation } from "@/redux/features/ride/ride.api";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 

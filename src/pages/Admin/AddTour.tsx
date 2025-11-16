@@ -38,7 +38,7 @@ import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
 import {
   useAddTourMutation,
   useGetTourTypesQuery,
-} from "@/redux/features/tour/tour.api";
+} from "@/redux/features/ride/ride.api";
 import type { IErrorResponse } from "@/types";
 
 import { zodResolver } from "@hookform/resolvers/zod";

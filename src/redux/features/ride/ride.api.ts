@@ -4,7 +4,7 @@ import type { IResponse, ITourPackage } from "@/types";
 export const tourApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // add tour mutation
-    addTour: builder.mutation({
+    addRide: builder.mutation({
       query: (tourData) => ({
         url: "/tour/create",
         method: "POST",
@@ -12,12 +12,12 @@ export const tourApi = baseApi.injectEndpoints({
       }),
 
       //for cache invalidation
-      invalidatesTags: ["TOUR"],
+      invalidatesTags: ["RIDE"],
     }),
     // -------------------------------
 
     // add tour type mutation
-    addTourType: builder.mutation({
+    addRideType: builder.mutation({
       query: (tourTypeName) => ({
         url: "/tour/create-tour-type",
         method: "POST",
@@ -25,7 +25,7 @@ export const tourApi = baseApi.injectEndpoints({
       }),
 
       //for cache invalidation
-      invalidatesTags: ["TOUR"],
+      invalidatesTags: ["RIDE"],
     }),
     // -------------------------------
 
@@ -37,7 +37,7 @@ export const tourApi = baseApi.injectEndpoints({
       }),
 
       //for cache invalidation
-      invalidatesTags: ["TOUR"],
+      invalidatesTags: ["RIDE"],
     }),
     // -------------------------------
 
@@ -50,7 +50,7 @@ export const tourApi = baseApi.injectEndpoints({
       }),
 
       //for cache invalidation
-      providesTags: ["TOUR"],
+      providesTags: ["RIDE"],
 
       //useful for transforming response before using it in the component and filtering essential data which we want
       transformResponse: (response) => response.data,
@@ -58,13 +58,13 @@ export const tourApi = baseApi.injectEndpoints({
     // -------------------------------
 
     // get all tours query with params for filtering
-    getAllTours: builder.query<ITourPackage[], unknown>({
+    getAllRides: builder.query<ITourPackage[], unknown>({
       query: (params) => ({
-        url: "/tour",
+        url: "/ride",
         method: "GET",
         params: params,
       }),
-      providesTags: ["TOUR"],
+      providesTags: ["RIDE"],
       transformResponse: (response: IResponse<ITourPackage[]>) => response.data,
     }),
     // -------------------------------
@@ -72,8 +72,8 @@ export const tourApi = baseApi.injectEndpoints({
 });
 
 export const {
-  useAddTourMutation,
-  useAddTourTypeMutation,
+  useAddRideMutation,
+  useAddRideTypeMutation,
   useGetTourTypesQuery,
   useRemoveTourTypeMutation,
   useGetAllToursQuery,

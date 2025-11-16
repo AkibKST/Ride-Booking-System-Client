@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
-import { useGetAllToursQuery } from "@/redux/features/tour/tour.api";
+import { useGetAllToursQuery } from "@/redux/features/ride/ride.api";
 import { format } from "date-fns";
 import { Link, useParams } from "react-router";
 
-export default function TourDetails() {
+export default function RideDetails() {
   // Get the tour ID from the URL parameters
   const { id } = useParams();
 
