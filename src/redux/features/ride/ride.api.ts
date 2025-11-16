@@ -76,5 +76,5 @@ export const {
   useAddRideTypeMutation,
   useGetTourTypesQuery,
   useRemoveTourTypeMutation,
-  useGetAllToursQuery,
+  useGetAllRidesQuery,
 } = tourApi;

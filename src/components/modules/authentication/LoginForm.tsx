@@ -24,18 +24,20 @@ export function LoginForm({
   const form = useForm({
     //! For development only
     defaultValues: {
-      email: "mirhussainmurtaza@gmail.com",
-      password: "12345678",
+      email: "your email address",
+      password: "password here",
     },
   });
   const [login] = useLoginMutation();
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       const res = await login(data).unwrap();
+      toast.success("Logged in successfully");
+      navigate("/");
 
+      console.log(res);
       if (res.success) {
-        toast.success("Logged in successfully");
-        navigate("/");
+        navigate("/verify", { state: data.email });
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

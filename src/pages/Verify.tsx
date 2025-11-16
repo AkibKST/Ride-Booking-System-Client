@@ -30,7 +30,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dot } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 import { toast } from "sonner";
 import z from "zod";
 
@@ -84,6 +84,7 @@ export default function Verify() {
       if (res.success) {
         toast.success("OTP Verified", { id: toastId });
         setConfirmed(true);
+        navigate("/")
       }
     } catch (err) {
       console.log(err);
@@ -91,11 +92,11 @@ export default function Verify() {
   };
 
   // ! Needed - Turned off for development
-  useEffect(() => {
-    if (!email) {
-      navigate("/");
-    }
-  }, [email]);
+  // useEffect(() => {
+  //   if (!email) {
+  //     navigate("/");
+  //   }
+  // }, [email]);
 
   useEffect(() => {
     if (!email || !confirmed) {

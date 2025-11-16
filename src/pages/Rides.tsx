@@ -1,6 +1,6 @@
 import TourFilters from "@/components/modules/tours/TourFilters";
 import { Button } from "@/components/ui/button";
-import { useGetAllToursQuery } from "@/redux/features/ride/ride.api";
+import { useGetAllRidesQuery } from "@/redux/features/ride/ride.api";
 
 import { Link, useSearchParams } from "react-router";
 
@@ -13,7 +13,7 @@ export default function Rides() {
   const tourType = searchParams.get("tourType") || undefined;
 
   // fetch tours based on division and tourType filters
-  const { data } = useGetAllToursQuery({ division, tourType });
+  const { data } = useGetAllRidesQuery({ division, tourType });
 
   return (
     <div className="container mx-auto px-5 py-8 grid grid-cols-12 gap-5">

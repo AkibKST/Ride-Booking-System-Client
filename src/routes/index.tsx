@@ -1,6 +1,5 @@
 import App from "@/App";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import About from "@/pages/About";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Unauthorized from "@/pages/Unathorized";
@@ -13,11 +12,11 @@ import { withAuth } from "@/utils/withAuth";
 import { role } from "@/constants/role";
 import type { TRole } from "@/types";
 import Homepage from "@/pages/Homepage";
-import Booking from "@/pages/Booking";
 import Fail from "@/pages/Payment/Fail";
 import Success from "@/pages/Payment/Success";
 import Rides from "@/pages/Rides";
 import RideDetails from "@/pages/RideDetails";
+import { AboutPage } from "@/pages/About";
 
 export const router = createBrowserRouter([
   {
@@ -29,7 +28,7 @@ export const router = createBrowserRouter([
         index: true,
       },
       {
-        Component: About,
+        Component: AboutPage,
         path: "about",
       },
       {
@@ -40,10 +39,10 @@ export const router = createBrowserRouter([
         Component: RideDetails,
         path: "rides/:id",
       },
-      {
-        Component: withAuth(Booking),
-        path: "booking/:id",
-      },
+      // {
+      //   Component: withAuth(Booking),
+      //   path: "booking/:id",
+      // },
     ],
   },
   {

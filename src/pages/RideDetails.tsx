@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
-import { useGetAllToursQuery } from "@/redux/features/ride/ride.api";
+import { useGetAllRidesQuery } from "@/redux/features/ride/ride.api";
 import { format } from "date-fns";
 import { Link, useParams } from "react-router";
 
@@ -9,7 +9,7 @@ export default function RideDetails() {
   const { id } = useParams();
 
   // Fetch tour details using the tour ID for specific tour
-  const { data, isLoading } = useGetAllToursQuery({ _id: id });
+  const { data, isLoading } = useGetAllRidesQuery({ _id: id });
 
   // Fetch division details using the division ID from the tour data
   // and get only the name field when data is available.
