@@ -3,12 +3,12 @@ import type { IResponse, ITourPackage } from "@/types";
 
 export const tourApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // add tour mutation
-    addRide: builder.mutation({
-      query: (tourData) => ({
-        url: "/tour/create",
+    // add ride mutation
+    addRideRequest: builder.mutation({
+      query: (rideData) => ({
+        url: "/ride/request",
         method: "POST",
-        data: tourData,
+        data: rideData,
       }),
 
       //for cache invalidation
@@ -60,7 +60,7 @@ export const tourApi = baseApi.injectEndpoints({
     // get all tours query with params for filtering
     getAllRides: builder.query<ITourPackage[], unknown>({
       query: (params) => ({
-        url: "/ride",
+        url: "/all-ride",
         method: "GET",
         params: params,
       }),
@@ -72,7 +72,7 @@ export const tourApi = baseApi.injectEndpoints({
 });
 
 export const {
-  useAddRideMutation,
+  useAddRideRequestMutation,
   useAddRideTypeMutation,
   useGetTourTypesQuery,
   useRemoveTourTypeMutation,
