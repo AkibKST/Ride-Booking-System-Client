@@ -67,7 +67,7 @@ const defaultAchievements = [
 ];
 
 const AboutPage = ({
-  title = "About Us",
+  // title = "About Us", used raw title in h1
   description = "Shadcnblocks is a passionate team dedicated to creating innovative solutions that empower businesses to thrive in the digital age.",
   mainImage = {
     src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-1.svg",
@@ -88,15 +88,17 @@ const AboutPage = ({
   },
   companiesTitle = "Valued by clients worldwide",
   companies = defaultCompanies,
-  achievementsTitle = "Our Achievements in Numbers",
+  // achievementsTitle = "Our Achievements in Numbers", used raw title in h2
   achievementsDescription = "Providing businesses with effective tools to improve workflows, boost efficiency, and encourage growth.",
   achievements = defaultAchievements,
 }: About3Props = {}) => {
   return (
-    <section className="py-32">
-      <div className="px-5">
+    <section className="py-24">
+      <div className="container px-8 mx-auto">
         <div className="mb-14 grid gap-5 text-center md:grid-cols-2 md:text-left">
-          <h1 className="text-5xl font-semibold">{title}</h1>
+          <h1 className="mb-3 mt-2 text-balance text-3xl font-semibold md:text-4xl">
+            About <span className="text-primary">Us</span>
+          </h1>
           <p className="text-muted-foreground">{description}</p>
         </div>
         <div className="grid gap-7 lg:grid-cols-3">
@@ -146,7 +148,7 @@ const AboutPage = ({
         <div className="bg-muted relative overflow-hidden rounded-xl p-7 md:p-16">
           <div className="flex flex-col gap-4 text-center md:text-left">
             <h2 className="text-3xl font-semibold md:text-4xl">
-              {achievementsTitle}
+              Our Achievements <span className="text-primary">in Numbers</span>
             </h2>
             <p className="text-muted-foreground max-w-xl">
               {achievementsDescription}

@@ -2,7 +2,7 @@
 
 ### **Project Overview**
 
-Develop a **production-grade**, fully responsive, and role-based full stack application for a **Ride Booking Platform** (similar to **Uber** or **Pathao**) using React.js, Redux Toolkit, and RTK Query.
+Developed a **production-grade**, fully responsive, and role-based full stack application for a **Ride Booking Platform** (similar to **Uber** or **Pathao**) using React.js, Redux Toolkit, and RTK Query.
 
 The frontend will interact with the **Ride Booking Backend API** to support distinct user experiences for **Riders**, **Drivers**, and **Admins**, ensuring a consistent, polished, and intuitive UI/UX across all devices.
 
@@ -144,7 +144,6 @@ Accessible without authentication:
 5. **Credentials**
    - Provide admin/driver/rider login details (email & password) for testing
 
-
 ### **Author**
-### **Akibul Islam**
 
+### **Akibul Islam**

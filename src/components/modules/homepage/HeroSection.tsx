@@ -5,7 +5,7 @@ import Logo from "@/assets/icons/Logo";
 
 const HeroSection = () => {
   return (
-    <section className="relative overflow-hidden py-24 mx-auto">
+    <section className="relative overflow-hidden py-24 mx-auto container">
       <div className=" relative z-10">
         <div className="mx-auto flex max-w-full flex-col items-center">
           <div className="flex flex-col items-center gap-6 text-center">

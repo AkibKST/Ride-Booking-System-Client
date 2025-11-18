@@ -311,7 +311,7 @@ export default function Footer() {
         </div>
 
         <p className="text-xs text-muted-foreground">
-          &copy; 2022. Company Name. All rights reserved.
+          &copy; {new Date().getFullYear()} akibKST. All rights reserved.
         </p>
       </div>
     </footer>
