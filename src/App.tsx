@@ -5,7 +5,9 @@ function App() {
   return (
     <>
       <CommonLayout>
-        <Outlet />
+        <div className="mx-auto">
+          <Outlet />
+        </div>
       </CommonLayout>
     </>
   );

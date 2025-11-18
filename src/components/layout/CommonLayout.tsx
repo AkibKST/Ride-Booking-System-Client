@@ -9,9 +9,11 @@ interface IProps {
 export default function CommonLayout({ children }: IProps) {
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar />
-      <div className="grow-1">{children}</div>
-      <Footer />
+      <div>
+        <Navbar />
+        <div className="">{children}</div>
+        <Footer />
+      </div>
     </div>
   );
 }
