@@ -2,26 +2,26 @@
 
 ### **Project Overview**
 
-Developed a **production-grade**, fully responsive, and role-based full stack application for a **Ride Booking Platform** (similar to **Uber** or **Pathao**) using React.js, Redux Toolkit, and RTK Query.
+Developed a **production-grade**, fully responsive, and role-based full stack application for a **Ride Booking Platform** (similar to **Uber** or **Pathao**) using React.js, Redux Toolkit, and RTK Query.✅
 
-The frontend will interact with the **Ride Booking Backend API** to support distinct user experiences for **Riders**, **Drivers**, and **Admins**, ensuring a consistent, polished, and intuitive UI/UX across all devices.
+The frontend will interact with the **Ride Booking Backend API** to support distinct user experiences for **Riders**, **Drivers**, and **Admins**, ensuring a consistent, polished, and intuitive UI/UX across all devices.✅
 
 I also create:
 
-- A **public landing experience** introducing the ride booking system
-- A **role-based dashboard interface** with tailored features for each user type
-- Robust **state management and API integration** via Redux Toolkit & RTK Query
-- Responsive UI and polished UX
+- A **public landing experience** introducing the ride booking system✅
+- A **role-based dashboard interface** with tailored features for each user type✅
+- Robust **state management and API integration** via Redux Toolkit & RTK Query✅
+- Responsive UI and polished UX✅
 
 ---
 
 ### **Tech Stack**
 
-- **Frontend Framework**: React (with React Router for routing)
-- **State Management**: Redux Toolkit, RTK Query, Axios (optional)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS (with responsive utility classes) or other css frameworks
-- **Backend API**: Node.js/Express, MongoDB, JWT + bcrypt (Secure Authentication)
+- **Frontend Framework**: React (with React Router for routing)✅
+- **State Management**: Redux Toolkit, RTK Query, Axios✅
+- **Language**: TypeScript✅
+- **Styling**: Tailwind CSS, Shad-Cn (with responsive utility classes) & other css frameworks✅
+- **Backend API**: Node.js/Express, MongoDB, JWT + bcrypt (Secure Authentication)✅
 - **Optional Enhancements**: recharts (data visualization), react-hot-toast (notifications)
 
 ---
@@ -30,12 +30,12 @@ I also create:
 
 ### **1️⃣ Responsive Design & Visual Consistency**
 
-- Fully responsive layout for mobile, tablet, and desktop devices.
-- Consistent typography, spacing, and color palette across all pages.
-- Sticky navigation bar with at least 6 clearly menu option routes and dropdown menu.
-- Footer designed to complement the theme and include functional links.
+- Fully responsive layout for mobile, tablet, and desktop devices.✅
+- Consistent typography, spacing, and color palette across all pages.✅
+- Sticky navigation bar with at least 6 clearly menu option routes and dropdown menu.✅
+- Footer designed to complement the theme and include functional links.✅
 - Improving performance through lazy-loading or skeleton loaders and ensure accessibility standards are met.
-- Populating the project with real or realistic data while avoiding placeholder text to give a professional finish.
+- Populating the project with real or realistic data while avoiding placeholder text to give a professional finish.✅
 
 ### **2️⃣ Public Landing Pages/Homepage**
 
@@ -43,17 +43,17 @@ Accessible without authentication:
 
 - **Home** – Included **at this project 5 distinct, well-structured sections** (excluding navbar and footer).✅
   - **Examples:** Hero Banner, How-it-works Overview, Service Highlights, Customer Feedback/Testimonials, Call-to-action Prompts(optional), or Promotions/Special Offers.
-- **About Us** – Company background, mission, and team profiles.
-- **Features** – Detailed breakdown of Rider, Driver and Admin capabilities.
-- **Contact** – Validated form for inquiries (simulated submission).
-- **FAQ** – Searchable list of common questions.
+- **About Us** – Company background, mission, and team profiles.✅
+- **Features** – Detailed breakdown of Rider, Driver and Admin capabilities.✅
+- **Contact** – Validated form for inquiries (simulated submission).✅
+- **FAQ** – Searchable list of common questions.✅
 
 ### **3️⃣ Authentication & Authorization**
 
-- JWT-based login and registration with role selection (`Rider`,`Driver`or`Admin`).
-- Registration form with role selection (`Rider`and`Driver`).
-- Google/Facebook login integration is optional. (However, if it is implemented, it must appropriately manage user roles)
-- Role-based landing pages upon login.
+- JWT-based login and registration with role selection (`Rider`,`Driver`or`Admin`).✅
+- After login, Request a Ride or Register as Driver form with role selection (`Rider`and`Driver`).✅
+- Google/Facebook login integration is optional. (It is implemented & must appropriately manage user roles)✅
+- Role-based landing pages upon login.✅
 - Account Status Handling:
   - Blocked or Suspended Users:
     - Redirected to a dedicated status page instead of accessing dashboards. This page must display the account status and provide instructions or contact details to resolve the issue.
@@ -89,13 +89,13 @@ Accessible without authentication:
 
 ### **7️⃣ General UI/UX Enhancements**
 
-- Role-based navigation with profile dropdown.
+- Role-based navigation with profile dropdown.✅
 - Interactive elements: carousels, dynamic ride cards, and responsive charts.
 - Skeleton and smooth transitions for enhanced perceived performance and global error handling.
-- No broken links or non-functional buttons.
-- Accessibility-compliant components and semantic HTML.
+- No broken links or non-functional buttons.✅
+- Accessibility-compliant components and semantic HTML.✅
 - Lazy-loading for heavy assets (maps, large tables).
-- Data visualization components like cards, bar charts, pie charts, and tables—all dynamically updated.
+- Data visualization components like cards, bar charts, pie charts, and tables—all dynamically updated.✅
 - **Emergency / SOS Button** (navigator.geolocation/react-geolocated/leaflet +emailjs/whatsapp-web.js/twilio)
   - Purpose: Enhance rider and driver safety by providing a quick way to call for help during a ride.
   - Steps:
@@ -115,16 +115,16 @@ Accessible without authentication:
 - **Strict Error Handling (⚠️ Mandatory for Full Marks)**:
   - All **forms must implement proper validation and error messages** (e.g., required fields, invalid email, password mismatch).
   - Clear and user-friendly error messages for network/API failures, validation errors, and unauthorized actions.
-  - Toast/alert message for both success and error states (e.g., `react-hot-toast`).
-  - ⚠️ **Important:** If you fail to handle form validation errors or API errors properly, **your marks will be significantly reduced.**
+  - Toast/alert message for both success and error states (e.g., `react-hot-toast`).✅
+  - ⚠️ **Important:** Handle form validation errors or API errors properly.
 
 ---
 
-### **Submission Guidelines**
+### **Guidelines & About Project**
 
 1. **Codebase**
-   - Clean, modular codebase following best practices.
-   - Comprehensive README.md including:
+   - Clean, modular codebase following best practices.✅
+   - Comprehensive README.md included:✅
      - Live deployment link
      - Project overview
      - Project features
@@ -132,10 +132,14 @@ Accessible without authentication:
      - Setup instructions
      - Any other relevant notes
 2. **GitHub Repository**
-   - Separate repositories for Frontend and Backend.
-   - Commit history showing development progress (minimum 10 meaningful commit messages for each frontend and backend repo; otherwise, you will get 0).
+   - Separate repositories for Frontend and Backend.✅
+   - Fronted Repo Link:
+   - Backend Repo Link:
+   - Commit history showing development progress (Implemented with meaningful commit messages for each frontend and backend repo).✅
 3. **Live Deployment**
-   - Provide live deployment URLs for both frontend and backend.
+   - Provide live deployment URLs for both frontend and backend.✅
+   - Fronted Deploy Link:
+   - Backend Deploy Link:
 4. **Demo video** (10-15 minutes) walkthrough covering:
    - Registration and login (all roles)
    - Rider booking process with live tracking
@@ -144,6 +148,5 @@ Accessible without authentication:
 5. **Credentials**
    - Provide admin/driver/rider login details (email & password) for testing
 
-### **Author**
-
-### **Akibul Islam**
+**Author**
+**Akibul Islam (akibKST)**
