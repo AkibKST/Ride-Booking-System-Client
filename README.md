@@ -26,13 +26,13 @@ I also create:
 
 ---
 
-### **📌 Core Functional Requirements**
+### **📌 Core Functional Implements**
 
 ### **1️⃣ Responsive Design & Visual Consistency**
 
 - Fully responsive layout for mobile, tablet, and desktop devices.
 - Consistent typography, spacing, and color palette across all pages.
-- Sticky navigation bar with at least 6 clearly menu option routes and dropdown menu if required.
+- Sticky navigation bar with at least 6 clearly menu option routes and dropdown menu.
 - Footer designed to complement the theme and include functional links.
 - Improving performance through lazy-loading or skeleton loaders and ensure accessibility standards are met.
 - Populating the project with real or realistic data while avoiding placeholder text to give a professional finish.
@@ -41,8 +41,8 @@ I also create:
 
 Accessible without authentication:
 
-- **Home** – Must include **at least 5 distinct, well-structured sections** (excluding navbar and footer).
-  - **Examples:** Hero Banner, How-it-works Overview, Service Highlights, Customer Feedback/Testimonials, Call-to-action Prompts, or Promotions/Special Offers.
+- **Home** – Included **at this project 5 distinct, well-structured sections** (excluding navbar and footer).✅
+  - **Examples:** Hero Banner, How-it-works Overview, Service Highlights, Customer Feedback/Testimonials, Call-to-action Prompts(optional), or Promotions/Special Offers.
 - **About Us** – Company background, mission, and team profiles.
 - **Features** – Detailed breakdown of Rider, Driver and Admin capabilities.
 - **Contact** – Validated form for inquiries (simulated submission).
