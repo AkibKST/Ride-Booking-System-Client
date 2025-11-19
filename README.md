@@ -1,4 +1,4 @@
-## 🚖 Ride Management System – Frontend Requirements (React + Redux Toolkit + RTK Query)
+## 🚖 Ride Management System – Frontend (React + Redux Toolkit + RTK Query)
 
 ### **Project Overview**
 
