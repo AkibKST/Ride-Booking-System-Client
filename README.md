@@ -133,8 +133,8 @@ Accessible without authentication:
      - Any other relevant notes
 2. **GitHub Repository**
    - Separate repositories for Frontend and Backend.✅
-   - Fronted Repo Link:
-   - Backend Repo Link:
+   - Fronted Repo Link: https://github.com/AkibKST/Ride-Booking-System-Client
+   - Backend Repo Link: https://github.com/AkibKST/Ride-Booking-System-Backend
    - Commit history showing development progress (Implemented with meaningful commit messages for each frontend and backend repo).✅
 3. **Live Deployment**
    - Provide live deployment URLs for both frontend and backend.✅
