@@ -1,20 +1,21 @@
 //use this file into getSidebarItems.ts
 
-import Bookings from "@/pages/User/Bookings";
+import UserDashboard from "@/pages/User/Dashboard";
 import type { ISidebarItem } from "@/types";
 
-import { History } from "lucide-react";
+import { LayoutDashboard } from "lucide-react";
 
 export const userSidebarItems: ISidebarItem[] = [
   {
-    title: "History",
+    title: "Dashboard",
     items: [
       {
-        title: "Bookings",
-        url: "/user/bookings",
-        component: Bookings,
-        icon: History,
+        title: "Dashboard",
+        url: "/user/dashboard",
+        component: UserDashboard,
+        icon: LayoutDashboard,
       },
     ],
   },
+
 ];

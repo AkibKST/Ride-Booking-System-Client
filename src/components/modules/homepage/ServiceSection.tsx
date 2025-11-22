@@ -69,7 +69,7 @@ const ServiceSection = () => {
 
               <div className="flex w-full flex-col justify-center gap-2 sm:flex-row lg:justify-start">
                 <Button
-                  onClick={() => navigate("/register-driver")}
+                  onClick={() => navigate("/driver-register")}
                   className="w-full sm:w-auto"
                 >
                   Register as Driver

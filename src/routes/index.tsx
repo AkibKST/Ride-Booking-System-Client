@@ -2,13 +2,13 @@ import App from "@/App";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
+import DriverRegister from "@/pages/DriverRegister";
 import Unauthorized from "@/pages/Unathorized";
 import { generateRoutes } from "@/utils/generateRoutes";
 import { createBrowserRouter, Navigate } from "react-router";
 import { adminSidebarItems } from "./adminSidebarItems";
 import { userSidebarItems } from "./userSidebarItems";
 import { driverSidebarItems } from "./driverSidebarItems";
-// import { withAuth } from "@/utils/withAuth";
 // import { role } from "@/constants/role";
 // import type { TRole } from "@/types";
 import Homepage from "@/pages/Homepage";
@@ -78,6 +78,10 @@ export const router = createBrowserRouter([
         Component: Faq,
         path: "faq",
       },
+      {
+        Component: DriverRegister,
+        path: "driver-register",
+      },
       // {
       //   Component: withAuth(Booking),
       //   path: "booking/:id",
@@ -97,7 +101,7 @@ export const router = createBrowserRouter([
     Component: DashboardLayout, // Protected route for user
     path: "/user",
     children: [
-      { index: true, element: <Navigate to="/user/bookings" /> },
+      { index: true, element: <Navigate to="/user/dashboard" /> },
       ...generateRoutes(userSidebarItems),
     ],
   },
@@ -120,14 +124,7 @@ export const router = createBrowserRouter([
     Component: Register,
     path: "/register",
   },
-  // {
-  //   Component: Verify,
-  //   path: "/verify",
-  // },
-  {
-    Component: Unauthorized,
-    path: "/unauthorized",
-  },
+  { Component: Unauthorized, path: "/unauthorized" },
   {
     Component: Success,
     path: "/payment/success",
