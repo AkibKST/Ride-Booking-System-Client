@@ -3,8 +3,10 @@ import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Logo from "@/assets/icons/Logo";
 import imageUrl from "@/assets/image/cool-motorcycle-indoors.jpg";
+import { useNavigate } from "react-router";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   const divStyle = {
     backgroundImage: `url(${imageUrl})`,
     backgroundSize: "cover",
@@ -36,11 +38,11 @@ const HeroSection = () => {
                     </p>
                   </div>
                   <div className="mt-6 flex justify-center gap-3">
-                    <Button className="shadow-sm transition-shadow hover:shadow">
-                      Request a Ride
-                    </Button>
-                    <Button variant="outline" className="group">
-                      Register as a Driver{" "}
+                    <Button
+                      onClick={() => navigate("/features")}
+                      className="shadow-sm transition-shadow hover:shadow"
+                    >
+                      Platform Features{" "}
                       <ExternalLink className="ml-2 h-4 transition-transform group-hover:translate-x-0.5" />
                     </Button>
                   </div>

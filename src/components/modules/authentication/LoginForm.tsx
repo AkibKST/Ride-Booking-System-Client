@@ -32,25 +32,26 @@ export function LoginForm({
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       const res = await login(data).unwrap();
+      console.log(res)
       toast.success("Logged in successfully");
       navigate("/");
 
-      console.log(res);
-      if (res.success) {
-        navigate("/verify", { state: data.email });
-      }
+      // console.log(res);
+      // if (res.success) {
+      //   navigate("/verify", { state: data.email });
+      // }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error(err);
 
-      if (err.data.message === "Password does not match") {
-        toast.error("Invalid credentials");
-      }
+      // if (err.data.message === "Password does not match") {
+      //   toast.error("Invalid credentials");
+      // }
 
-      if (err.data.message === "User is not verified") {
-        toast.error("Your account is not verified");
-        navigate("/verify", { state: data.email });
-      }
+      // if (err.data.message === "User is not verified") {
+      //   toast.error("Your account is not verified");
+      //   navigate("/verify", { state: data.email });
+      // }
     }
   };
 

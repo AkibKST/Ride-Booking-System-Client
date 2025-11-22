@@ -19,11 +19,12 @@ export interface ISidebarItem {
   items: {
     title: string;
     url: string;
-    component: ComponentType;
+    component?: ComponentType;
+    icon?: ComponentType;
   }[];
 }
 
-export type TRole = "SUPER_ADMIN" | "ADMIN" | "USER";
+export type TRole = "SUPER_ADMIN" | "ADMIN" | "USER" | "DRIVER";
 
 // Zod issue type for error handling
 type ZodIssue = {
