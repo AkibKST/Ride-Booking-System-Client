@@ -12,8 +12,9 @@ import { lazy } from "react";
 const Analytics = lazy(() => import("@/pages/Admin/Analytics"));
 const AddTour = lazy(() => import("@/pages/Admin/AddTour"));
 const AddTourType = lazy(() => import("@/pages/Admin/AddTourType"));
+const UserManagement = lazy(() => import("@/pages/Admin/UserManagement"));
 
-import { BarChart3, Map, MapPin, PlusCircle } from "lucide-react";
+import { BarChart3, Map, MapPin, PlusCircle, Users } from "lucide-react";
 
 export const adminSidebarItems: ISidebarItem[] = [
   {
@@ -47,6 +48,17 @@ export const adminSidebarItems: ISidebarItem[] = [
         url: "/admin/add-tour",
         component: AddTour,
         icon: Map,
+      },
+    ],
+  },
+  {
+    title: "User Management",
+    items: [
+      {
+        title: "All Users",
+        url: "/admin/users",
+        component: UserManagement,
+        icon: Users,
       },
     ],
   },

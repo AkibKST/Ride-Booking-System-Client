@@ -51,3 +51,14 @@ export interface IErrorResponse {
   };
   stack?: string;
 }
+
+export interface IUser {
+  _id: string;
+  name: string;
+  email: string;
+  role: TRole;
+  isBlocked: boolean;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}

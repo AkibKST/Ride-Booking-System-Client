@@ -38,10 +38,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {item.items.map((item: any) => (
-                  <SidebarMenuItem key={item.title}>
+                {item.items.map((subItem: any) => (
+                  <SidebarMenuItem key={subItem.title}>
                     <SidebarMenuButton asChild>
-                      <Link to={item.url}>{item.title}</Link>
+                      <Link to={subItem.url}>
+                        {subItem.icon && <subItem.icon />}
+                        <span>{subItem.title}</span>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}

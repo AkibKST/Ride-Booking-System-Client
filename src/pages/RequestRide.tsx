@@ -1,186 +1,184 @@
 import { Button } from "@/components/ui/button";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
+
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import MapPicker from "@/components/MapPicker";
 
 const formSchema = z.object({
-    pickupLocation: z.string().min(2, {
-        message: "Pickup location must be at least 2 characters.",
-    }),
-    dropoffLocation: z.string().min(2, {
-        message: "Dropoff location must be at least 2 characters.",
-    }),
-    vehicleType: z.string({
-        required_error: "Please select a vehicle type.",
-    }),
-    paymentMethod: z.enum(["cash", "card", "wallet"], {
-        required_error: "Please select a payment method.",
-    }),
+  pickupLocation: z.string().min(2, {
+    message: "Pickup location must be at least 2 characters.",
+  }),
+  dropoffLocation: z.string().min(2, {
+    message: "Dropoff location must be at least 2 characters.",
+  }),
+  status: z
+    .enum(["requested", "accepted", "in_progress", "completed", "cancelled"])
+    .default("requested"),
 });
 
 export default function RequestRide() {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            pickupLocation: "",
-            dropoffLocation: "",
-        },
-    });
+  const form = useForm<z.input<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      pickupLocation: "",
+      dropoffLocation: "",
+    },
+  });
 
-    const vehicleType = form.watch("vehicleType");
-    const [fare, setFare] = useState<number | null>(null);
+  const [activeField, setActiveField] = useState<"pickup" | "dropoff">(
+    "pickup"
+  );
+  const [pickupCoords, setPickupCoords] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+  const [dropoffCoords, setDropoffCoords] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
 
-    // Mock fare calculation
-    useEffect(() => {
-        if (vehicleType) {
-            const baseRate = {
-                standard: 50,
-                premium: 80,
-                van: 100,
-            };
-            // Random distance between 2 and 15 km
-            const distance = Math.floor(Math.random() * 13) + 2;
-            const rate = baseRate[vehicleType as keyof typeof baseRate] || 50;
-            setFare(distance * rate);
-        } else {
-            setFare(null);
-        }
-    }, [vehicleType]);
+  const handleLocationSelect = (lat: number, lng: number) => {
+    const coords = { lat, lng };
+    const address = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
-        toast.success(`Ride requested successfully! Estimated Fare: ৳${fare}`);
+    if (activeField === "pickup") {
+      setPickupCoords(coords);
+      form.setValue("pickupLocation", address);
+    } else {
+      setDropoffCoords(coords);
+      form.setValue("dropoffLocation", address);
     }
+  };
 
-    return (
-        <div className="container mx-auto py-10 flex justify-center">
-            <Card className="w-full max-w-md">
-                <CardHeader>
-                    <CardTitle>Request a Ride</CardTitle>
-                    <CardDescription>
-                        Enter your trip details to book a ride.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                            <FormField
-                                control={form.control}
-                                name="pickupLocation"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Pickup Location</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="123 Main St" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="dropoffLocation"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Dropoff Location</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="456 Elm St" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="vehicleType"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Vehicle Type</FormLabel>
-                                        <Select
-                                            onValueChange={field.onChange}
-                                            defaultValue={field.value}
-                                        >
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Select a vehicle" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                <SelectItem value="standard">Standard</SelectItem>
-                                                <SelectItem value="premium">Premium</SelectItem>
-                                                <SelectItem value="van">Van</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+  function onSubmit(values: z.input<typeof formSchema>) {
+    console.log({ ...values, pickupCoords, dropoffCoords });
+    toast.success(`Ride requested successfully!`);
+  }
 
-                            {fare !== null && (
-                                <div className="p-4 bg-muted rounded-md flex justify-between items-center">
-                                    <span className="font-medium">Estimated Fare:</span>
-                                    <span className="text-xl font-bold text-primary">৳{fare}</span>
-                                </div>
-                            )}
+  return (
+    <div className="container mx-auto py-10 flex flex-col items-center gap-6">
+      <Card className="w-full max-w-4xl">
+        <CardHeader>
+          <CardTitle>Select Location</CardTitle>
+          <CardDescription>
+            Click on the map to select your {activeField} location.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex gap-4 mb-4">
+            <Button
+              variant={activeField === "pickup" ? "default" : "outline"}
+              onClick={() => setActiveField("pickup")}
+              type="button"
+            >
+              Set Pickup
+            </Button>
+            <Button
+              variant={activeField === "dropoff" ? "default" : "outline"}
+              onClick={() => setActiveField("dropoff")}
+              type="button"
+            >
+              Set Dropoff
+            </Button>
+          </div>
+          <MapPicker
+            onLocationSelect={handleLocationSelect}
+            selectedLocation={
+              activeField === "pickup" ? pickupCoords : dropoffCoords
+            }
+          />
+        </CardContent>
+      </Card>
 
-                            <FormField
-                                control={form.control}
-                                name="paymentMethod"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Payment Method</FormLabel>
-                                        <Select
-                                            onValueChange={field.onChange}
-                                            defaultValue={field.value}
-                                        >
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Select payment method" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                <SelectItem value="cash">Cash</SelectItem>
-                                                <SelectItem value="card">Card</SelectItem>
-                                                <SelectItem value="wallet">Wallet</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle>Request a Ride</CardTitle>
+          <CardDescription>
+            Enter your trip details to book a ride.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="pickupLocation"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Pickup Location</FormLabel>
+                    <FormControl>
+                      <div className="flex gap-2">
+                        <Input
+                          placeholder="Select on map"
+                          {...field}
+                          readOnly
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setActiveField("pickup")}
+                        >
+                          Map
+                        </Button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="dropoffLocation"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Dropoff Location</FormLabel>
+                    <FormControl>
+                      <div className="flex gap-2">
+                        <Input
+                          placeholder="Select on map"
+                          {...field}
+                          readOnly
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setActiveField("dropoff")}
+                        >
+                          Map
+                        </Button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                            <Button type="submit" className="w-full">
-                                Request Ride
-                            </Button>
-                        </form>
-                    </Form>
-                </CardContent>
-            </Card>
-        </div>
-    );
+              <Button type="submit" className="w-full">
+                Request Ride
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }
