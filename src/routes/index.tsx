@@ -31,6 +31,7 @@ import ActiveRide from "@/pages/Driver/ActiveRide";
 import { withAuth } from "@/utils/withAuth";
 import type { TRole } from "@/types";
 import { role } from "@/constants/role";
+import { riderSidebarItems } from "./riderSidebarItems";
 
 export const router = createBrowserRouter([
   {
@@ -102,7 +103,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    Component: DashboardLayout, // Protected route for user
+    Component: withAuth(DashboardLayout, role.user as TRole), // Protected route for user
     path: "/user",
     children: [
       { index: true, element: <Navigate to="/user/dashboard" /> },
@@ -110,7 +111,15 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    Component: DashboardLayout, // Protected route for driver
+    Component: withAuth(DashboardLayout, role.rider as TRole), // Protected route for user
+    path: "/rider",
+    children: [
+      { index: true, element: <Navigate to="/rider/dashboard" /> },
+      ...generateRoutes(riderSidebarItems),
+    ],
+  },
+  {
+    Component: withAuth(DashboardLayout, role.driver as TRole), // Protected route for driver
     path: "/driver",
     children: [
       { index: true, element: <Navigate to="/driver/dashboard" /> },

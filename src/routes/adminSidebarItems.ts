@@ -1,20 +1,15 @@
 //use this file into getSidebarItems.ts
 
-// import AddTour from "@/pages/Admin/AddTour";
-// import AddTourType from "@/pages/Admin/AddTourType";
-// import Analytics from "@/pages/Admin/Analytics";
-
-import AddDivision from "@/pages/Admin/AddDivision";
 import type { ISidebarItem } from "@/types";
 import { lazy } from "react";
 
 //UX and Performance Enhancements with Lazy Loading
 const Analytics = lazy(() => import("@/pages/Admin/Analytics"));
-const AddTour = lazy(() => import("@/pages/Admin/AddTour"));
-const AddTourType = lazy(() => import("@/pages/Admin/AddTourType"));
 const UserManagement = lazy(() => import("@/pages/Admin/UserManagement"));
 
-import { BarChart3, Map, MapPin, PlusCircle, Users } from "lucide-react";
+import { BarChart3, MapPin, PlusCircle, Users } from "lucide-react";
+import RequestRide from "@/pages/RequestRide";
+import DriverRegister from "@/pages/DriverRegister";
 
 export const adminSidebarItems: ISidebarItem[] = [
   {
@@ -29,25 +24,19 @@ export const adminSidebarItems: ISidebarItem[] = [
     ],
   },
   {
-    title: "Tour Management",
+    title: "Ride Management",
     items: [
       {
-        title: "Add Tour Type",
-        url: "/admin/add-tour-type",
-        component: AddTourType,
+        title: "Add Ride",
+        url: "/admin/request-ride",
+        component: RequestRide,
         icon: PlusCircle,
       },
       {
-        title: "Add Division",
-        url: "/admin/add-division",
-        component: AddDivision,
+        title: "Register Driver",
+        url: "/admin/driver-register",
+        component: DriverRegister,
         icon: MapPin,
-      },
-      {
-        title: "Add Tour",
-        url: "/admin/add-tour",
-        component: AddTour,
-        icon: Map,
       },
     ],
   },

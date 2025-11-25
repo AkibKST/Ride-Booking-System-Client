@@ -5,4 +5,5 @@ export const role = {
   admin: "ADMIN",
   user: "USER",
   driver: "DRIVER",
+  rider: "RIDER",
 };
