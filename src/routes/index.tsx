@@ -28,6 +28,9 @@ import DriverDashboard from "@/pages/Driver/Dashboard";
 import AdminDashboard from "@/pages/Admin/Dashboard";
 import IncomingRequests from "@/pages/Driver/IncomingRequests";
 import ActiveRide from "@/pages/Driver/ActiveRide";
+import { withAuth } from "@/utils/withAuth";
+import type { TRole } from "@/types";
+import { role } from "@/constants/role";
 
 export const router = createBrowserRouter([
   {
@@ -89,7 +92,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    Component: DashboardLayout, // Protected route for superAdmin
+    Component: withAuth(DashboardLayout, role.superAdmin as TRole), // Protected route for superAdmin
     path: "/admin",
     children: [
       { index: true, element: <Navigate to="/admin/dashboard" /> },

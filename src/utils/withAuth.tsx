@@ -13,12 +13,12 @@ export const withAuth = (Component: ComponentType, requiredRole?: TRole) => {
     const { data, isLoading } = useUserInfoQuery(undefined);
 
     // If not authenticated, it redirects to the login page.
-    if (!isLoading && !data?.data?.email) {
+    if (!isLoading && !data?.data?.data?.email) {
       return <Navigate to="/login" />;
     }
 
     // If the user does not have the required role, it redirects to an unauthorized page.
-    if (requiredRole && !isLoading && requiredRole !== data?.data?.role) {
+    if (requiredRole && !isLoading && requiredRole !== data?.data?.data?.role) {
       return <Navigate to="/unauthorized" />;
     }
 
