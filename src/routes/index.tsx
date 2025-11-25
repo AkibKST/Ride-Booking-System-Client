@@ -3,14 +3,13 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import DriverRegister from "@/pages/DriverRegister";
-import Unauthorized from "@/pages/Unathorized";
+import Unauthorized from "@/pages/Unauthorized";
 import { generateRoutes } from "@/utils/generateRoutes";
 import { createBrowserRouter, Navigate } from "react-router";
 import { adminSidebarItems } from "./adminSidebarItems";
 import { userSidebarItems } from "./userSidebarItems";
 import { driverSidebarItems } from "./driverSidebarItems";
-// import { role } from "@/constants/role";
-// import type { TRole } from "@/types";
+
 import Homepage from "@/pages/Homepage";
 import Fail from "@/pages/Payment/Fail";
 import Success from "@/pages/Payment/Success";
@@ -86,10 +85,6 @@ export const router = createBrowserRouter([
         Component: DriverRegister,
         path: "driver-register",
       },
-      // {
-      //   Component: withAuth(Booking),
-      //   path: "booking/:id",
-      // },
     ],
   },
   {

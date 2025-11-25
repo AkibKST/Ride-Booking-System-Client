@@ -5,18 +5,17 @@ export const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllUsers: builder.query<IUser[], Record<string, unknown>>({
       query: (params) => ({
-        url: "/user",
+        url: "/user/all-users",
         method: "GET",
         params: params,
       }),
       providesTags: ["USER"],
       transformResponse: (response: IResponse<IUser[]>) => response.data,
     }),
-    updateUserStatus: builder.mutation<IResponse<IUser>, { id: string; isBlocked: boolean }>({
-      query: ({ id, isBlocked }) => ({
-        url: `/user/${id}`,
+    updateUserStatus: builder.mutation<IResponse<IUser>, { id: string }>({
+      query: ({ id }) => ({
+        url: `/user/user-block-toggle/${id}`,
         method: "PATCH",
-        data: { isBlocked },
       }),
       invalidatesTags: ["USER"],
     }),
