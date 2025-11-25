@@ -34,7 +34,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import type { FileMetadata } from "@/hooks/use-file-upload";
 import { cn } from "@/lib/utils";
-import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
+import { useGetDivisionsQuery } from "@/redux/features/driver/driver.api";
 import {
   useAddTourMutation,
   useGetTourTypesQuery,

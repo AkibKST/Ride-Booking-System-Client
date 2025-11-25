@@ -94,7 +94,7 @@ export default function Navbar() {
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
                   {navigationLinks.map((link, index) => (
                     // Only render links that are PUBLIC or match the user's role
-                    <>
+                    <Fragment key={index}>
                       {link.role === "PUBLIC" && (
                         <NavigationMenuItem key={index} className="w-full">
                           <NavigationMenuLink asChild className="py-1.5">
@@ -109,7 +109,7 @@ export default function Navbar() {
                           </NavigationMenuLink>
                         </NavigationMenuItem>
                       )}
-                    </>
+                    </Fragment>
                   ))}
                 </NavigationMenuList>
               </NavigationMenu>

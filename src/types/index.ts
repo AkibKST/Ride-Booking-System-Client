@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ComponentType } from "react";
 
 // re-exporting types for easier imports from auth
@@ -61,4 +62,35 @@ export interface IUser {
   status: string;
   createdAt: string;
   updatedAt: string;
+  isActive?: "BLOCKED" | "ACTIVE";
+}
+
+export interface IDriver {
+  availabilityStatus: string;
+  createdAt: Date;
+  currentLocation: CurrentLocation;
+  isApproved: boolean;
+  isBlocked: boolean;
+  licenseNumber: string;
+  rides: any[];
+  updatedAt: Date;
+  user_id: UserID;
+  vehicleColor: string;
+  vehicleModel: string;
+  vehicleNumber: string;
+  vehicleType: string;
+  _id: string;
+}
+
+export interface CurrentLocation {
+  latitude: number;
+  longitude: number;
+}
+
+export interface UserID {
+  _id: string;
+  name: string;
+  email: string;
+  role: string;
+  isActive: string;
 }

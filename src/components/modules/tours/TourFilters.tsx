@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
+import { useGetDriversQuery } from "@/redux/features/driver/driver.api";
 import { useGetTourTypesQuery } from "@/redux/features/ride/ride.api";
 import { useSearchParams } from "react-router";
 
@@ -23,7 +23,7 @@ export default function TourFilters() {
 
   // fetch divisions and tour types for filter options
   const { data: divisionData, isLoading: divisionIsLoading } =
-    useGetDivisionsQuery(undefined);
+    useGetDriversQuery(undefined);
 
   const { data: tourTypeData, isLoading: tourTypeIsLoading } =
     useGetTourTypesQuery({ limit: 1000, fields: "_id,name" });

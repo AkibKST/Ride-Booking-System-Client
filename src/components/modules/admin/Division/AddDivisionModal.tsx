@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useAddDivisionMutation } from "@/redux/features/division/division.api";
+import { useAddDivisionMutation } from "@/redux/features/driver/driver.api";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
+import { useGetDriversQuery } from "@/redux/features/driver/driver.api";
 import { useGetAllRidesQuery } from "@/redux/features/ride/ride.api";
 import { format } from "date-fns";
 import { Link, useParams } from "react-router";
@@ -14,7 +14,7 @@ export default function RideDetails() {
   // Fetch division details using the division ID from the tour data
   // and get only the name field when data is available.
   // no data fetch will be skipped
-  const { data: divisionData } = useGetDivisionsQuery(
+  const { data: divisionData } = useGetDriversQuery(
     {
       _id: data?.[0]?.division,
       fields: "name",

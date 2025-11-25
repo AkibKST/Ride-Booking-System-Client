@@ -7,9 +7,10 @@ import { lazy } from "react";
 const Analytics = lazy(() => import("@/pages/Admin/Analytics"));
 const UserManagement = lazy(() => import("@/pages/Admin/UserManagement"));
 
-import { BarChart3, MapPin, PlusCircle, Users } from "lucide-react";
+import { BarChart3, Car, MapPin, PlusCircle, Users } from "lucide-react";
 import RequestRide from "@/pages/RequestRide";
 import DriverRegister from "@/pages/DriverRegister";
+import DriverManagement from "@/pages/Admin/DriverManagement";
 
 export const adminSidebarItems: ISidebarItem[] = [
   {
@@ -48,6 +49,17 @@ export const adminSidebarItems: ISidebarItem[] = [
         url: "/admin/users",
         component: UserManagement,
         icon: Users,
+      },
+    ],
+  },
+  {
+    title: "Driver Management",
+    items: [
+      {
+        title: "All Drivers",
+        url: "/admin/drivers",
+        component: DriverManagement,
+        icon: Car,
       },
     ],
   },
