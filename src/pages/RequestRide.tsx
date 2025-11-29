@@ -22,6 +22,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import MapPicker from "@/components/MapPicker";
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 
 const formSchema = z.object({
   pickupLocation: z.string().min(2, {
@@ -68,6 +69,26 @@ export default function RequestRide() {
       form.setValue("dropoffLocation", address);
     }
   };
+
+  // ------------------Transfrom Data for post in backend-----------------------
+  const userId = useUserInfoQuery().data?.id;
+  const transformRideData = (values, userId) => {
+    return {
+      userId: userId, // You need to get this from your auth state
+      pickupLocation: {
+        address: values.pickupLocation,
+        latitude: values.pickupCoords.lat,
+        longitude: values.pickupCoords.lng,
+      },
+      dropLocation: {
+        address: values.dropoffLocation,
+        latitude: values.dropoffCoords.lat,
+        longitude: values.dropoffCoords.lng,
+      },
+      status: values.status,
+    };
+  };
+  // ---------------------------------------------------------------------------
 
   function onSubmit(values: z.input<typeof formSchema>) {
     console.log({ ...values, pickupCoords, dropoffCoords });
