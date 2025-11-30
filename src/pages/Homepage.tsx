@@ -9,14 +9,7 @@ export default function Homepage() {
   return (
     <div>
       <HeroSection />
-      <ServiceSection
-        heading="Our Services"
-        description="How it works overview"
-        image={{
-          src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-1.svg",
-          alt: "Service section demo image showing interface components",
-        }}
-      />
+      <ServiceSection />
       <FaqSection />
       <AboutPage />
       <TestimonialSection />

@@ -1,5 +1,5 @@
 import { baseApi } from "@/redux/baseApi";
-import type { IResponse, ITourPackage } from "@/types";
+import type { IResponse, IRide, ITourPackage } from "@/types";
 
 export const tourApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -68,6 +68,16 @@ export const tourApi = baseApi.injectEndpoints({
       transformResponse: (response: IResponse<ITourPackage[]>) => response.data,
     }),
     // -------------------------------
+
+    // get single ride query
+    getRide: builder.query<IRide, string>({
+      query: (id) => ({
+        url: `/ride/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["RIDE"],
+      transformResponse: (response: IResponse<IRide>) => response.data,
+    }),
   }),
 });
 
@@ -77,4 +87,5 @@ export const {
   useGetTourTypesQuery,
   useRemoveTourTypeMutation,
   useGetAllRidesQuery,
+  useGetRideQuery,
 } = tourApi;

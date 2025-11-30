@@ -102,6 +102,8 @@ export const router = createBrowserRouter([
     path: "/user",
     children: [
       { index: true, element: <Navigate to="/user/dashboard" /> },
+      { path: "request-ride", Component: RequestRide },
+      { path: "ride-history", Component: RideHistory },
       ...generateRoutes(userSidebarItems),
     ],
   },
@@ -110,6 +112,7 @@ export const router = createBrowserRouter([
     path: "/rider",
     children: [
       { index: true, element: <Navigate to="/rider/dashboard" /> },
+      { path: "ride-history", Component: RideHistory },
       ...generateRoutes(riderSidebarItems),
     ],
   },

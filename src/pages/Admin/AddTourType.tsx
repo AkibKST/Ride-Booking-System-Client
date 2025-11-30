@@ -33,7 +33,7 @@ export default function AddTourType() {
   const [currentPage, setCurrentPage] = useState(1);
 
   //state to manage limit per page
-  const [limit, setLimit] = useState(5);
+  const [limit] = useState(5);
 
   //fetching tour types with current page as param
   const { data } = useGetTourTypesQuery({ page: currentPage, limit: limit });

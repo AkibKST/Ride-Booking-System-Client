@@ -22,6 +22,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { useNavigate } from "react-router";
 import MapPicker from "@/components/MapPicker";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import { Spinner } from "@/components/ui/spinner";
@@ -43,6 +44,7 @@ const formSchema = z.object({
 
 // ------------------Request Ride Component-----------------------
 export default function RequestRide() {
+  const navigate = useNavigate();
   const form = useForm<z.input<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -99,7 +101,7 @@ export default function RequestRide() {
   }
 
   //if user is not USER role
-  if (userRole !== "USER") {
+  if (userRole !== "USER" && userRole !== "RIDER") {
     return (
       <section>
         <div className="container mx-auto py-10 flex flex-col items-center gap-6">
@@ -159,9 +161,12 @@ export default function RequestRide() {
 
     // call add ride request mutation
     try {
-      await addRideRequest(rideData).unwrap();
+      const res = await addRideRequest(rideData).unwrap();
       toast.success(`Ride requested successfully!`);
       form.reset();
+      if (res?.data?._id) {
+        navigate(`/ride-details/${res.data._id}`);
+      }
     } catch (err: any) {
       console.error("Request Ride Error:", err);
       toast.error(err?.data?.message || "Failed to request ride");

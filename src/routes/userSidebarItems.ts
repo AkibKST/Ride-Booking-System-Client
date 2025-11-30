@@ -3,7 +3,7 @@
 import UserDashboard from "@/pages/User/Dashboard";
 import type { ISidebarItem } from "@/types";
 
-import { LayoutDashboard } from "lucide-react";
+import { History, LayoutDashboard, MapPin } from "lucide-react";
 
 export const userSidebarItems: ISidebarItem[] = [
   {
@@ -14,6 +14,16 @@ export const userSidebarItems: ISidebarItem[] = [
         url: "/user/dashboard",
         component: UserDashboard,
         icon: LayoutDashboard,
+      },
+      {
+        title: "Request Ride",
+        url: "request-ride",
+        icon: MapPin,
+      },
+      {
+        title: "Ride History",
+        url: "ride-history",
+        icon: History,
       },
     ],
   },

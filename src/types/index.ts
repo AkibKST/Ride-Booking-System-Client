@@ -6,6 +6,7 @@ export type { ISendOtp, IVerifyOtp, ILogin } from "./auth.type";
 
 // re-exporting types for easier imports from tour
 export type { ITourPackage } from "./tour.type";
+export type { IRide } from "./ride.type";
 
 export interface IResponse<T> {
   statusCode: number;

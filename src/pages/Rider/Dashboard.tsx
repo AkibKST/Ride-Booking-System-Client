@@ -3,7 +3,7 @@ import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 
 export default function RiderDashboard() {
   const { data: userInfo } = useUserInfoQuery(undefined);
-  const user = userInfo?.data;
+  const user = userInfo?.data?.data;
 
   return (
     <div className="flex flex-col gap-4">

@@ -2,38 +2,35 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, MapPin, Phone, User } from "lucide-react";
+import { useGetRideQuery } from "@/redux/features/ride/ride.api";
+import { ArrowLeft, MapPin, Phone } from "lucide-react";
 import { Link, useParams } from "react-router";
-
-// Mock Data (in a real app, fetch based on ID)
-const mockRideDetails = {
-    id: "1",
-    date: "March 10, 2024",
-    time: "10:30 AM",
-    pickup: "123 Main St, City Center",
-    dropoff: "456 Elm St, Suburbia",
-    fare: 150,
-    status: "completed",
-    driver: {
-        name: "Rahim Uddin",
-        rating: 4.8,
-        phone: "+8801712345678",
-        vehicle: "Toyota Corolla (Blue) - DHAKA METRO GA 12-3456",
-        image: "https://github.com/shadcn.png", // Placeholder
-    },
-    timeline: [
-        { time: "10:30 AM", event: "Ride Requested" },
-        { time: "10:35 AM", event: "Driver Assigned" },
-        { time: "10:45 AM", event: "Driver Arrived" },
-        { time: "10:46 AM", event: "Trip Started" },
-        { time: "11:15 AM", event: "Trip Completed" },
-    ],
-};
+import { Spinner } from "@/components/ui/spinner";
 
 export default function UserRideDetails() {
     const { id } = useParams();
-    // In a real app, use id to fetch data. Using mock data for now.
-    const ride = mockRideDetails;
+    const { data: ride, isLoading } = useGetRideQuery(id as string, { skip: !id });
+
+    if (isLoading) {
+        return (
+            <div className="container mx-auto py-10 flex justify-center">
+                <Spinner />
+            </div>
+        );
+    }
+
+    if (!ride) {
+        return (
+            <div className="container mx-auto py-10 text-center">
+                <h2 className="text-2xl font-bold">Ride not found</h2>
+                <Button variant="ghost" asChild className="mt-4">
+                    <Link to="/ride-history">
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Back to History
+                    </Link>
+                </Button>
+            </div>
+        );
+    }
 
     return (
         <div className="container mx-auto py-10 max-w-4xl">
@@ -61,8 +58,7 @@ export default function UserRideDetails() {
                                     <MapPin className="h-5 w-5 text-green-500 mt-1" />
                                     <div>
                                         <p className="text-sm text-muted-foreground">Pickup</p>
-                                        <p className="font-medium">{ride.pickup}</p>
-                                        <p className="text-xs text-muted-foreground">{ride.time}</p>
+                                        <p className="font-medium">{ride.pickupLocation.address}</p>
                                     </div>
                                 </div>
                                 <Separator />
@@ -70,7 +66,7 @@ export default function UserRideDetails() {
                                     <MapPin className="h-5 w-5 text-red-500 mt-1" />
                                     <div>
                                         <p className="text-sm text-muted-foreground">Dropoff</p>
-                                        <p className="font-medium">{ride.dropoff}</p>
+                                        <p className="font-medium">{ride.dropLocation.address}</p>
                                     </div>
                                 </div>
                             </div>
@@ -79,21 +75,12 @@ export default function UserRideDetails() {
 
                     <Card>
                         <CardHeader>
-                            <CardTitle>Ride Status Timeline</CardTitle>
+                            <CardTitle>Ride Status</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="space-y-4">
-                                {ride.timeline.map((item, index) => (
-                                    <div key={index} className="flex gap-4">
-                                        <div className="w-20 text-sm text-muted-foreground text-right">
-                                            {item.time}
-                                        </div>
-                                        <div className="relative border-l pl-4 pb-4 last:pb-0 last:border-l-0">
-                                            <div className="absolute -left-[5px] top-1 h-2.5 w-2.5 rounded-full bg-primary" />
-                                            <p className="text-sm font-medium">{item.event}</p>
-                                        </div>
-                                    </div>
-                                ))}
+                            <div className="flex justify-between items-center">
+                                <span className="text-muted-foreground">Current Status</span>
+                                <Badge className="capitalize text-lg px-4 py-1">{ride.status.replace("_", " ")}</Badge>
                             </div>
                         </CardContent>
                     </Card>
@@ -101,33 +88,46 @@ export default function UserRideDetails() {
 
                 {/* Right Column: Driver & Fare Info */}
                 <div className="space-y-6">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Driver Details</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-center">
-                            <div className="flex justify-center mb-4">
-                                <div className="h-20 w-20 rounded-full bg-muted overflow-hidden">
-                                    <img
-                                        src={ride.driver.image}
-                                        alt={ride.driver.name}
-                                        className="h-full w-full object-cover"
-                                    />
+                    {ride.driver ? (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Driver Details</CardTitle>
+                            </CardHeader>
+                            <CardContent className="text-center">
+                                <div className="flex justify-center mb-4">
+                                    <div className="h-20 w-20 rounded-full bg-muted overflow-hidden">
+                                        <img
+                                            src={ride.driver.image || "https://github.com/shadcn.png"}
+                                            alt={ride.driver.name}
+                                            className="h-full w-full object-cover"
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <h3 className="text-lg font-bold">{ride.driver.name}</h3>
-                            <div className="flex justify-center items-center gap-1 mb-2">
-                                <span className="text-yellow-500">★</span>
-                                <span>{ride.driver.rating}</span>
-                            </div>
-                            <p className="text-sm text-muted-foreground mb-4">
-                                {ride.driver.vehicle}
-                            </p>
-                            <Button variant="outline" className="w-full">
-                                <Phone className="mr-2 h-4 w-4" /> Call Driver
-                            </Button>
-                        </CardContent>
-                    </Card>
+                                <h3 className="text-lg font-bold">{ride.driver.name}</h3>
+                                {ride.driver.rating && (
+                                    <div className="flex justify-center items-center gap-1 mb-2">
+                                        <span className="text-yellow-500">★</span>
+                                        <span>{ride.driver.rating}</span>
+                                    </div>
+                                )}
+                                <p className="text-sm text-muted-foreground mb-4">
+                                    {ride.driver.vehicleModel} - {ride.driver.vehicleNumber}
+                                </p>
+                                <Button variant="outline" className="w-full">
+                                    <Phone className="mr-2 h-4 w-4" /> {ride.driver.phone}
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    ) : (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Driver Details</CardTitle>
+                            </CardHeader>
+                            <CardContent className="text-center py-8">
+                                <p className="text-muted-foreground">No driver assigned yet.</p>
+                            </CardContent>
+                        </Card>
+                    )}
 
                     <Card>
                         <CardHeader>
@@ -136,11 +136,7 @@ export default function UserRideDetails() {
                         <CardContent>
                             <div className="flex justify-between items-center mb-2">
                                 <span className="text-muted-foreground">Total Fare</span>
-                                <span className="text-xl font-bold">৳{ride.fare}</span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <span className="text-muted-foreground">Status</span>
-                                <Badge className="bg-green-500 capitalize">{ride.status}</Badge>
+                                <span className="text-xl font-bold">৳{ride.fare || "0"}</span>
                             </div>
                         </CardContent>
                     </Card>
