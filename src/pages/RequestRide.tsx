@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,7 +24,10 @@ import { toast } from "sonner";
 import { z } from "zod";
 import MapPicker from "@/components/MapPicker";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
+import { Spinner } from "@/components/ui/spinner";
+import { useAddRideRequestMutation } from "@/redux/features/ride/ride.api";
 
+// ------------------Form Schema using Zod-----------------------
 const formSchema = z.object({
   pickupLocation: z.string().min(2, {
     message: "Pickup location must be at least 2 characters.",
@@ -35,7 +39,9 @@ const formSchema = z.object({
     .enum(["requested", "accepted", "in_progress", "completed", "cancelled"])
     .default("requested"),
 });
+// ------------------------------------------------------------
 
+// ------------------Request Ride Component-----------------------
 export default function RequestRide() {
   const form = useForm<z.input<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -45,6 +51,10 @@ export default function RequestRide() {
     },
   });
 
+  // ------------------Add Ride Request Mutation-----------------------
+  const [addRideRequest] = useAddRideRequestMutation();
+
+  // ------------------Map Location Selection-----------------------
   const [activeField, setActiveField] = useState<"pickup" | "dropoff">(
     "pickup"
   );
@@ -56,7 +66,9 @@ export default function RequestRide() {
     lat: number;
     lng: number;
   } | null>(null);
+  // ------------------------------------------------------------
 
+  // ------------------Handle Location Selection from MapPicker-----------------------
   const handleLocationSelect = (lat: number, lng: number) => {
     const coords = { lat, lng };
     const address = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
@@ -69,14 +81,25 @@ export default function RequestRide() {
       form.setValue("dropoffLocation", address);
     }
   };
+  // ------------------------------------------------------------
 
   // ------------------Transform Data for post in backend-----------------------
-  const { data: userInfo } = useUserInfoQuery(undefined);
+  const { data: userInfo, isLoading } = useUserInfoQuery(undefined);
 
   const userId = userInfo?.data?.data?._id;
   const userRole = userInfo?.data?.data?.role;
 
-  if (userRole !== "user") {
+  //if user data is loading
+  if (isLoading) {
+    return (
+      <div className="container mx-auto py-10 flex flex-col items-center gap-6">
+        <Spinner></Spinner>
+      </div>
+    );
+  }
+
+  //if user is not USER role
+  if (userRole !== "USER") {
     return (
       <section>
         <div className="container mx-auto py-10 flex flex-col items-center gap-6">
@@ -88,31 +111,63 @@ export default function RequestRide() {
         </div>
       </section>
     );
-  } else {
-    console.log("User ID:", userId);
   }
-  // const transformRideData = (values, userId) => {
-  //   return {
-  //     userId: userId, // You need to get this from your auth state
-  //     pickupLocation: {
-  //       address: values.pickupLocation,
-  //       latitude: values.pickupCoords.lat,
-  //       longitude: values.pickupCoords.lng,
-  //     },
-  //     dropLocation: {
-  //       address: values.dropoffLocation,
-  //       latitude: values.dropoffCoords.lat,
-  //       longitude: values.dropoffCoords.lng,
-  //     },
-  //     status: values.status,
-  //   };
-  // };
-  // ---------------------------------------------------------------------------
+  // ------------------------------------------------------------
 
-  function onSubmit(values: z.input<typeof formSchema>) {
-    console.log({ ...values, pickupCoords, dropoffCoords });
-    toast.success(`Ride requested successfully!`);
+  // ------------------On Submit Form-----------------------
+  async function onSubmit(values: z.input<typeof formSchema>) {
+    const transformRideData = (
+      values: {
+        pickupLocation: string;
+        dropoffLocation: string;
+        status?:
+          | "requested"
+          | "accepted"
+          | "in_progress"
+          | "completed"
+          | "cancelled"
+          | undefined;
+      },
+      userId: any,
+      pickupCoords: { lat: number; lng: number } | null,
+      dropoffCoords: { lat: number; lng: number } | null
+    ) => {
+      return {
+        userId: userId,
+        pickupLocation: {
+          address: values.pickupLocation,
+          latitude: pickupCoords?.lat,
+          longitude: pickupCoords?.lng,
+        },
+        dropLocation: {
+          address: values.dropoffLocation,
+          latitude: dropoffCoords?.lat,
+          longitude: dropoffCoords?.lng,
+        },
+        status: values.status,
+      };
+    };
+
+    // prepare ride data
+    const rideData = transformRideData(
+      values,
+      userId,
+      pickupCoords,
+      dropoffCoords
+    );
+    console.log("Ride Data:", rideData);
+
+    // call add ride request mutation
+    try {
+      await addRideRequest(rideData).unwrap();
+      toast.success(`Ride requested successfully!`);
+      form.reset();
+    } catch (err: any) {
+      console.error("Request Ride Error:", err);
+      toast.error(err?.data?.message || "Failed to request ride");
+    }
   }
+  // ---------------------------------------------------------------------------
 
   return (
     <div className="container mx-auto py-10 flex flex-col items-center gap-6">
