@@ -67,7 +67,7 @@ export function RegisterForm({
       console.log(result);
 
       toast.success("Registration successful! Please verify your email.");
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       console.log(error);
     }

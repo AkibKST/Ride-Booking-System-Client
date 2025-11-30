@@ -70,24 +70,43 @@ export default function RequestRide() {
     }
   };
 
-  // ------------------Transfrom Data for post in backend-----------------------
-  const userId = useUserInfoQuery().data?.id;
-  const transformRideData = (values, userId) => {
-    return {
-      userId: userId, // You need to get this from your auth state
-      pickupLocation: {
-        address: values.pickupLocation,
-        latitude: values.pickupCoords.lat,
-        longitude: values.pickupCoords.lng,
-      },
-      dropLocation: {
-        address: values.dropoffLocation,
-        latitude: values.dropoffCoords.lat,
-        longitude: values.dropoffCoords.lng,
-      },
-      status: values.status,
-    };
-  };
+  // ------------------Transform Data for post in backend-----------------------
+  const { data: userInfo } = useUserInfoQuery(undefined);
+
+  const userId = userInfo?.data?.data?._id;
+  const userRole = userInfo?.data?.data?.role;
+
+  if (userRole !== "user") {
+    return (
+      <section>
+        <div className="container mx-auto py-10 flex flex-col items-center gap-6">
+          <h2 className="text-2xl font-bold">Access Denied</h2>
+          <p className="text-center max-w-md">
+            You do not have permission to request a ride. Please log in as a
+            user.
+          </p>
+        </div>
+      </section>
+    );
+  } else {
+    console.log("User ID:", userId);
+  }
+  // const transformRideData = (values, userId) => {
+  //   return {
+  //     userId: userId, // You need to get this from your auth state
+  //     pickupLocation: {
+  //       address: values.pickupLocation,
+  //       latitude: values.pickupCoords.lat,
+  //       longitude: values.pickupCoords.lng,
+  //     },
+  //     dropLocation: {
+  //       address: values.dropoffLocation,
+  //       latitude: values.dropoffCoords.lat,
+  //       longitude: values.dropoffCoords.lng,
+  //     },
+  //     status: values.status,
+  //   };
+  // };
   // ---------------------------------------------------------------------------
 
   function onSubmit(values: z.input<typeof formSchema>) {
