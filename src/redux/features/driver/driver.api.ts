@@ -19,10 +19,10 @@ export const driverApi = baseApi.injectEndpoints({
       transformResponse: (response) => response.data,
     }),
 
-    // Add Division
-    addDivision: builder.mutation({
+    // Add Driver
+    addDriver: builder.mutation({
       query: (data) => ({
-        url: "/division",
+        url: "/driver/createDriverProfile",
         method: "POST",
         data,
       }),
