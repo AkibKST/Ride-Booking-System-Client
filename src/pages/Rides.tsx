@@ -1,4 +1,3 @@
-import TourFilters from "@/components/modules/tours/TourFilters";
 import { Button } from "@/components/ui/button";
 import { useGetAllRidesQuery } from "@/redux/features/ride/ride.api";
 
@@ -18,7 +17,6 @@ export default function Rides() {
   return (
     <div className="container mx-auto px-5 py-8 grid grid-cols-12 gap-5">
       {/* Filters Section */}
-      <TourFilters />
 
       {/* Tours Listing Section */}
       <div className="col-span-9 w-full">

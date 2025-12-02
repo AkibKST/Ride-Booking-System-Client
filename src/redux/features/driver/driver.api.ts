@@ -29,19 +29,18 @@ export const driverApi = baseApi.injectEndpoints({
     }),
 
     // Get Divisions
-    getDivisions: builder.query({
-      query: () => ({
-        url: "/division",
-        method: "GET",
-      }),
-      transformResponse: (response) => response.data,
-    }),
+    // getDivisions: builder.query({
+    //   query: () => ({
+    //     url: "/division",
+    //     method: "GET",
+    //   }),
+    //   transformResponse: (response) => response.data,
+    // }),
   }),
 });
 
 export const {
   useApprovedSuspendToggleMutation,
   useGetDriversQuery,
-  useAddDivisionMutation,
-  useGetDivisionsQuery,
+  useAddDriverMutation,
 } = driverApi;
