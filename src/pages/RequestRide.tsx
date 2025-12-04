@@ -100,8 +100,8 @@ export default function RequestRide() {
     );
   }
 
-  //if user is not USER role
-  if (userRole !== "USER" && userRole !== "RIDER") {
+  //if user is Driver role
+  if (userRole === "Driver") {
     return (
       <section>
         <div className="container mx-auto py-10 flex flex-col items-center gap-6">
