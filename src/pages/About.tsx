@@ -1,3 +1,4 @@
+import MagicBento from "@/components/MagicBento";
 import { Button } from "@/components/ui/button";
 
 interface About3Props {
@@ -164,6 +165,26 @@ const AboutPage = ({
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Magic Bento Section */}
+
+        <div className="py-12 md:py-18 lg:py-24">
+          <h1 className="text-3xl font-semibold my-12 ml-4 md:text-4xl">
+            Our Provider <span className="text-primary">Focused On</span>
+          </h1>
+          <MagicBento
+            textAutoHide={true}
+            enableStars={true}
+            enableSpotlight={true}
+            enableBorderGlow={true}
+            enableTilt={true}
+            enableMagnetism={true}
+            clickEffect={true}
+            spotlightRadius={300}
+            particleCount={12}
+            glowColor="132, 0, 255"
+          ></MagicBento>
         </div>
       </div>
     </section>
