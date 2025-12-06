@@ -2,20 +2,43 @@ import { ExternalLink } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import Logo from "@/assets/icons/Logo";
-import imageUrl from "@/assets/image/cool-motorcycle-indoors.jpg";
+// import imageUrl from "@/assets/image/cool-motorcycle-indoors.jpg";
 import { useNavigate } from "react-router";
+import LiquidEther from "@/components/LiquidEther";
 
 const HeroSection = () => {
   const navigate = useNavigate();
-  const divStyle = {
-    backgroundImage: `url(${imageUrl})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    height: "100vh",
-  };
+  // const divStyle = {
+  //   backgroundImage: `url(${imageUrl})`,
+  //   backgroundSize: "cover",
+  //   backgroundPosition: "center",
+  //   height: "100vh",
+  // };
   return (
-    <div className="rounded-full " style={divStyle}>
-      <div className="backdrop-blur-xl bg-black/30 h-screen  w-full opacity-97 rounded-xl lg:h-full">
+    <>
+      <div style={{ position: "fixed", width: "100vw", height: "100vh" }}>
+        <LiquidEther
+          colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
+          mouseForce={20}
+          cursorSize={100}
+          isViscous={false}
+          viscous={30}
+          iterationsViscous={32}
+          iterationsPoisson={32}
+          resolution={0.5}
+          isBounce={false}
+          autoDemo={true}
+          autoSpeed={0.5}
+          autoIntensity={2.2}
+          takeoverDuration={0.25}
+          autoResumeDelay={3000}
+          autoRampDuration={0.6}
+        />
+      </div>
+      <div
+        style={{ position: "relative", zIndex: 1 }}
+        className="relative backdrop-blur-xl bg-black/30 h-screen  w-full opacity-97 rounded-xl lg:h-full"
+      >
         <section className="relative overflow-hidden py-24 mx-auto container ">
           <div className="">
             <div className=" relative z-10 ">
@@ -52,7 +75,7 @@ const HeroSection = () => {
           </div>
         </section>
       </div>
-    </div>
+    </>
   );
 };
 
