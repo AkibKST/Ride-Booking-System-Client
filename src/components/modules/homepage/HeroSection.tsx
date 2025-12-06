@@ -1,10 +1,11 @@
 import { ExternalLink } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import Logo from "@/assets/icons/Logo";
 // import imageUrl from "@/assets/image/cool-motorcycle-indoors.jpg";
 import { useNavigate } from "react-router";
 import LiquidEther from "@/components/LiquidEther";
+import StarBorder from "@/components/StarBorder";
+import { Button } from "@/components/ui/button";
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -67,14 +68,18 @@ const HeroSection = () => {
                       protected.
                     </p>
                   </div>
-                  <div className="mt-6 flex justify-center gap-3">
-                    <Button
-                      onClick={() => navigate("/features")}
-                      className="shadow-sm transition-shadow hover:shadow"
+                  <div className="mt-6 flex justify-center">
+                    <StarBorder
+                      as="button"
+                      className="custom-class"
+                      color="cyan"
+                      speed="5s"
                     >
-                      Platform Features{" "}
-                      <ExternalLink className="ml-2 h-4 transition-transform group-hover:translate-x-0.5" />
-                    </Button>
+                      <Button onClick={() => navigate("/features")}>
+                        Platform Features{" "}
+                        <ExternalLink className="transition-transform group-hover:translate-x-0.5" />
+                      </Button>
+                    </StarBorder>
                   </div>
                 </div>
               </div>

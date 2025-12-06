@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import heroImg1 from "@/assets/image/2206.i126.060.F.m005.c9.motorcycle bikers.jpg";
 import heroImg2 from "@/assets/image/7610.jpg";
 import { useNavigate } from "react-router";
+import StarBorder from "@/components/StarBorder";
 
 const ServiceSection = () => {
   const navigate = useNavigate();
@@ -30,12 +31,19 @@ const ServiceSection = () => {
               </h1>
 
               <div className="flex w-full flex-col justify-center gap-2 sm:flex-row lg:justify-start">
-                <Button
-                  onClick={() => navigate("/request-ride")}
-                  className="w-full sm:w-auto"
+                <StarBorder
+                  as="button"
+                  className="custom-class"
+                  color="cyan"
+                  speed="5s"
                 >
-                  Request Ride
-                </Button>
+                  <Button
+                    onClick={() => navigate("/request-ride")}
+                    className="w-full sm:w-auto"
+                  >
+                    Request Ride
+                  </Button>
+                </StarBorder>
               </div>
             </div>
             <div className="max-h-screen w-fit rounded-4xl object-cover">
@@ -68,12 +76,19 @@ const ServiceSection = () => {
               </h1>
 
               <div className="flex w-full flex-col justify-center gap-2 sm:flex-row lg:justify-start">
-                <Button
-                  onClick={() => navigate("/driver-register")}
-                  className="w-full sm:w-auto"
+                <StarBorder
+                  as="button"
+                  className="custom-class"
+                  color="cyan"
+                  speed="5s"
                 >
-                  Register as Driver
-                </Button>
+                  <Button
+                    onClick={() => navigate("/driver-register")}
+                    className="w-full sm:w-auto"
+                  >
+                    Register as Driver
+                  </Button>
+                </StarBorder>
               </div>
             </div>
           </div>

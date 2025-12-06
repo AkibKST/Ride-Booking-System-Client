@@ -11,6 +11,8 @@ import { Input } from "@/components/ui/input";
 import config from "@/config";
 import { cn } from "@/lib/utils";
 import { useLoginMutation } from "@/redux/features/auth/auth.api";
+import axios from "axios";
+import { useEffect } from "react";
 
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
@@ -32,7 +34,7 @@ export function LoginForm({
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       const res = await login(data).unwrap();
-      console.log(res)
+      console.log(res);
       toast.success("Logged in successfully");
       navigate("/");
 
@@ -54,6 +56,17 @@ export function LoginForm({
       // }
     }
   };
+
+  useEffect(() => {
+    axios
+      .get(`${config.baseURL}/user/me`, { withCredentials: true })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>

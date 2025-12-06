@@ -156,7 +156,7 @@ export default function Navbar() {
         {/* Right side */}
         <div className="flex items-center gap-2">
           <ModeToggle />
-          {userdata?.data?.data?.email && (
+          {userdata?.data?.data?.email ? (
             <Button
               onClick={handleLogout}
               variant="outline"
@@ -165,8 +165,7 @@ export default function Navbar() {
             >
               Log out
             </Button>
-          )}
-          {!userdata?.data?.data?.email && (
+          ) : (
             <Button asChild size="sm" className="text-sm">
               <Link to="/login">Log In</Link>
             </Button>
