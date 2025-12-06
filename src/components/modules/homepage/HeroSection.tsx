@@ -16,7 +16,14 @@ const HeroSection = () => {
   // };
   return (
     <>
-      <div style={{ position: "fixed", width: "100vw", height: "100vh" }}>
+      <div
+        style={{
+          position: "fixed",
+          width: "100vw",
+          height: "100vh",
+          zIndex: -1,
+        }}
+      >
         <LiquidEther
           colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
           mouseForce={20}
