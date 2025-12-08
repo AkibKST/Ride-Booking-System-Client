@@ -6,10 +6,32 @@ import { useGetRideQuery } from "@/redux/features/ride/ride.api";
 import { ArrowLeft, MapPin, Phone } from "lucide-react";
 import { Link, useParams } from "react-router";
 import { Spinner } from "@/components/ui/spinner";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function UserRideDetails() {
     const { id } = useParams();
-    const { data: ride, isLoading } = useGetRideQuery(id as string, { skip: !id });
+    const [previousStatus, setPreviousStatus] = useState<string | null>(null);
+
+    // Poll every 5 seconds when status is "requested"
+    const { data: ride, isLoading } = useGetRideQuery(id as string, {
+        skip: !id,
+        pollingInterval: 5000, // Poll every 5 seconds
+        refetchOnMountOrArgChange: true
+    });
+
+    // Detect status changes and show notifications
+    // This must be before any conditional returns to follow Rules of Hooks
+    useEffect(() => {
+        if (ride?.status && previousStatus && ride.status !== previousStatus) {
+            if (previousStatus === "requested" && ride.status === "accepted") {
+                toast.success("🎉 Driver accepted your ride!");
+            }
+        }
+        if (ride?.status) {
+            setPreviousStatus(ride.status);
+        }
+    }, [ride?.status, previousStatus]);
 
     if (isLoading) {
         return (
@@ -39,6 +61,74 @@ export default function UserRideDetails() {
                     <ArrowLeft className="mr-2 h-4 w-4" /> Back to History
                 </Link>
             </Button>
+
+            {/* Waiting for Driver Banner - Only shown when status is "requested" */}
+            {ride.status === "requested" && (
+                <Card className="mb-6 bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-950/20 dark:to-purple-950/20 border-violet-200 dark:border-violet-800">
+                    <CardContent className="pt-6">
+                        <div className="text-center space-y-4">
+                            {/* Animated waiting indicator */}
+                            <div className="flex justify-center">
+                                <div className="relative">
+                                    <div className="h-16 w-16 rounded-full bg-violet-200 dark:bg-violet-800 flex items-center justify-center animate-pulse">
+                                        <svg
+                                            className="w-8 h-8 text-violet-600 dark:text-violet-300"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                            />
+                                        </svg>
+                                    </div>
+                                    <div className="absolute inset-0 rounded-full bg-violet-400 dark:bg-violet-600 animate-ping opacity-20"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h2 className="text-2xl font-bold text-violet-900 dark:text-violet-100 mb-2">
+                                    🚗 Waiting for Driver to Accept
+                                </h2>
+                                <p className="text-violet-700 dark:text-violet-300">
+                                    We're finding a driver for you. This usually takes less than a minute...
+                                </p>
+                            </div>
+
+                            {/* Ride Estimate Summary */}
+                            <div className="flex justify-center gap-6 pt-4">
+                                {ride.distance && (
+                                    <div className="text-center">
+                                        <p className="text-sm text-violet-600 dark:text-violet-400">Distance</p>
+                                        <p className="text-lg font-bold text-violet-900 dark:text-violet-100">
+                                            {ride.distance} km
+                                        </p>
+                                    </div>
+                                )}
+                                {ride.duration && (
+                                    <div className="text-center">
+                                        <p className="text-sm text-violet-600 dark:text-violet-400">Duration</p>
+                                        <p className="text-lg font-bold text-violet-900 dark:text-violet-100">
+                                            {ride.duration}
+                                        </p>
+                                    </div>
+                                )}
+                                {ride.fare && (
+                                    <div className="text-center">
+                                        <p className="text-sm text-violet-600 dark:text-violet-400">Fare</p>
+                                        <p className="text-lg font-bold text-violet-900 dark:text-violet-100">
+                                            ৳{ride.fare}
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Left Column: Map & Route Info */}
@@ -124,7 +214,32 @@ export default function UserRideDetails() {
                                 <CardTitle>Driver Details</CardTitle>
                             </CardHeader>
                             <CardContent className="text-center py-8">
-                                <p className="text-muted-foreground">No driver assigned yet.</p>
+                                {ride.status === "requested" ? (
+                                    <div className="space-y-3">
+                                        <div className="flex justify-center">
+                                            <div className="h-12 w-12 rounded-full bg-violet-100 dark:bg-violet-900 flex items-center justify-center animate-pulse">
+                                                <svg
+                                                    className="w-6 h-6 text-violet-600 dark:text-violet-400"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                                    />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <p className="text-violet-600 dark:text-violet-400 font-medium">
+                                            Searching for nearby drivers...
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <p className="text-muted-foreground">No driver assigned yet.</p>
+                                )}
                             </CardContent>
                         </Card>
                     )}

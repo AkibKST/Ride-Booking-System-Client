@@ -146,6 +146,9 @@ export default function RequestRide() {
         | "cancelled"
         | undefined;
       },
+      fare: number,
+      distance: number,
+      duration: string,
       userId: any,
       pickupCoords: { lat: number; lng: number } | null,
       dropoffCoords: { lat: number; lng: number } | null
@@ -162,6 +165,9 @@ export default function RequestRide() {
           latitude: dropoffCoords?.lat,
           longitude: dropoffCoords?.lng,
         },
+        fare: fare,
+        distance: distance,
+        duration: duration,
         status: values.status,
       };
     };
@@ -169,6 +175,9 @@ export default function RequestRide() {
     // prepare ride data
     const rideData = transformRideData(
       values,
+      rideEstimate?.fare || 0,
+      rideEstimate?.distance || 0,
+      rideEstimate?.duration || "0 mins",
       userId,
       pickupCoords,
       dropoffCoords
@@ -181,7 +190,7 @@ export default function RequestRide() {
       toast.success(`Ride requested successfully!`);
       form.reset();
       if (res?.data?._id) {
-        navigate(`/ride-details/${res.data._id}`);
+        navigate(`/user-ride-details/${res.data._id}`);
       }
     } catch (err: any) {
       console.error("Request Ride Error:", err);

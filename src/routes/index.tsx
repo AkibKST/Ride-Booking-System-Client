@@ -66,6 +66,10 @@ export const router = createBrowserRouter([
         path: "ride-details/:id",
       },
       {
+        Component: UserRideDetails,
+        path: "user-ride-details/:id",
+      },
+      {
         Component: Profile,
         path: "profile",
       },

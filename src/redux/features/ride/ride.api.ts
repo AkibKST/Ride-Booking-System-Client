@@ -72,7 +72,7 @@ export const tourApi = baseApi.injectEndpoints({
     // get single ride query
     getRide: builder.query<IRide, string>({
       query: (id) => ({
-        url: `/ride/${id}`,
+        url: `/ride/singleRide/${id}`,
         method: "GET",
       }),
       providesTags: ["RIDE"],
