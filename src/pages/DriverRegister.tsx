@@ -29,7 +29,7 @@ import { toast } from "sonner";
 import z from "zod";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import { useAddDriverMutation } from "@/redux/features/driver/driver.api";
-// import { useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 const driverRegisterSchema = z.object({
   licenseNumber: z
@@ -66,7 +66,7 @@ export default function DriverRegister() {
 
   const [registerDriver, { isLoading }] = useAddDriverMutation();
   const { data: userInfo } = useUserInfoQuery(undefined);
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const onSubmit = async (data: z.infer<typeof driverRegisterSchema>) => {
     if (!userInfo?.data?.data?._id) {
@@ -102,7 +102,7 @@ export default function DriverRegister() {
           console.log("Driver registration response:", res);
           toast.success("Driver registration successful! Wait for admin approval.");
           form.reset();
-          // navigate("/driver/dashboard");
+          navigate("/driver-approval-pending");
         } catch (error: any) {
           console.error("Driver Registration Failed:", error);
 

@@ -28,6 +28,16 @@ export const driverApi = baseApi.injectEndpoints({
       }),
     }),
 
+    // Get current driver profile
+    getMyDriverProfile: builder.query({
+      query: () => ({
+        url: "/driver/myProfile",
+        method: "GET",
+      }),
+      transformResponse: (response) => response.data,
+      providesTags: ["DRIVER"],
+    }),
+
     // Get Divisions
     // getDivisions: builder.query({
     //   query: () => ({
@@ -43,4 +53,5 @@ export const {
   useApprovedSuspendToggleMutation,
   useGetDriversQuery,
   useAddDriverMutation,
+  useGetMyDriverProfileQuery,
 } = driverApi;

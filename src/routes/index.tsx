@@ -27,6 +27,7 @@ import DriverDashboard from "@/pages/Driver/Dashboard";
 import AdminDashboard from "@/pages/Admin/Dashboard";
 import IncomingRequests from "@/pages/Driver/IncomingRequests";
 import ActiveRide from "@/pages/Driver/ActiveRide";
+import DriverApprovalPending from "@/pages/Driver/DriverApprovalPending";
 import { withAuth } from "@/utils/withAuth";
 import type { TRole } from "@/types";
 import { role } from "@/constants/role";
@@ -88,6 +89,10 @@ export const router = createBrowserRouter([
       {
         Component: withAuth(DriverRegister, role.user as TRole), // Protected route for user
         path: "driver-register",
+      },
+      {
+        Component: DriverApprovalPending,
+        path: "driver-approval-pending",
       },
     ],
   },

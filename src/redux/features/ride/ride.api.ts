@@ -78,6 +78,18 @@ export const tourApi = baseApi.injectEndpoints({
       providesTags: ["RIDE"],
       transformResponse: (response: IResponse<IRide>) => response.data,
     }),
+    // -------------------------------
+
+    // get rides with status filter (for driver incoming requests)
+    getRequestedRides: builder.query({
+      query: () => ({
+        url: "/ride",
+        method: "GET",
+        params: { status: "requested" },
+      }),
+      providesTags: ["RIDE"],
+      transformResponse: (response) => response.data,
+    }),
   }),
 });
 
@@ -86,4 +98,5 @@ export const {
   useAddRideTypeMutation,
   useGetAllRidesQuery,
   useGetRideQuery,
+  useGetRequestedRidesQuery,
 } = tourApi;
