@@ -30,22 +30,14 @@ export const driverApi = baseApi.injectEndpoints({
 
     // Get current driver profile
     getMyDriverProfile: builder.query({
-      query: () => ({
+      query: (userId) => ({
         url: "/driver/myProfile",
         method: "GET",
+        params: { userId },
       }),
       transformResponse: (response) => response.data,
       providesTags: ["DRIVER"],
     }),
-
-    // Get Divisions
-    // getDivisions: builder.query({
-    //   query: () => ({
-    //     url: "/division",
-    //     method: "GET",
-    //   }),
-    //   transformResponse: (response) => response.data,
-    // }),
   }),
 });
 

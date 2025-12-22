@@ -36,7 +36,9 @@ const driverRegisterSchema = z.object({
     .string()
     .min(5, { message: "License number must be at least 5 characters" })
     .max(20, { message: "License number is too long" })
-    .regex(/^[A-Z0-9]+$/, { message: "License number must contain only uppercase letters and numbers" }),
+    .regex(/^[A-Z0-9]+$/, {
+      message: "License number must contain only uppercase letters and numbers",
+    }),
   vehicleType: z.enum(["car", "bike", "suv", "cng"], {
     message: "Please select a valid vehicle type",
   }),
@@ -44,7 +46,9 @@ const driverRegisterSchema = z.object({
     .string()
     .min(3, { message: "Vehicle number is required" })
     .max(15, { message: "Vehicle number is too long" })
-    .regex(/^[A-Z0-9]+$/, { message: "Vehicle number must contain only uppercase letters and numbers" }),
+    .regex(/^[A-Z0-9]+$/, {
+      message: "Vehicle number must contain only uppercase letters and numbers",
+    }),
   vehicleColor: z.string().min(1, { message: "Please select a vehicle color" }),
   vehicleModel: z
     .string()
@@ -80,6 +84,7 @@ export default function DriverRegister() {
       return;
     }
 
+    //for getting current position
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const driverData = {
@@ -100,7 +105,9 @@ export default function DriverRegister() {
         try {
           const res = await registerDriver(driverData).unwrap();
           console.log("Driver registration response:", res);
-          toast.success("Driver registration successful! Wait for admin approval.");
+          toast.success(
+            "Driver registration successful! Wait for admin approval."
+          );
           form.reset();
           navigate("/driver-approval-pending");
         } catch (error: any) {
@@ -108,12 +115,19 @@ export default function DriverRegister() {
 
           // Show specific error messages
           if (error?.data?.message) {
-            if (error.data.message.includes("already registered") || error.data.message.includes("existing driver")) {
+            if (
+              error.data.message.includes("already registered") ||
+              error.data.message.includes("existing driver")
+            ) {
               toast.error("You are already registered as a driver.");
             } else if (error.data.message.includes("license")) {
-              toast.error("Invalid license number. Please check and try again.");
+              toast.error(
+                "Invalid license number. Please check and try again."
+              );
             } else if (error.data.message.includes("vehicle")) {
-              toast.error("Invalid vehicle information. Please check your details.");
+              toast.error(
+                "Invalid vehicle information. Please check your details."
+              );
             } else {
               toast.error(error.data.message);
             }
@@ -135,22 +149,28 @@ export default function DriverRegister() {
 
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            toast.error("Location permission denied. Please enable location access to continue.");
+            toast.error(
+              "Location permission denied. Please enable location access to continue."
+            );
             break;
           case error.POSITION_UNAVAILABLE:
-            toast.error("Location information is unavailable. Please try again.");
+            toast.error(
+              "Location information is unavailable. Please try again."
+            );
             break;
           case error.TIMEOUT:
             toast.error("Location request timed out. Please try again.");
             break;
           default:
-            toast.error("An unknown error occurred while getting your location.");
+            toast.error(
+              "An unknown error occurred while getting your location."
+            );
             break;
         }
       },
       {
         enableHighAccuracy: true,
-        timeout: 5000,
+        timeout: 7000,
         maximumAge: 0,
       }
     );
@@ -303,8 +323,8 @@ export default function DriverRegister() {
               <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-800 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-200">
                 <p className="font-medium">📍 Location Access Required</p>
                 <p className="mt-1 text-xs">
-                  Your current location will be captured when you submit this form.
-                  Please ensure location services are enabled.
+                  Your current location will be captured when you submit this
+                  form. Please ensure location services are enabled.
                 </p>
               </div>
 
