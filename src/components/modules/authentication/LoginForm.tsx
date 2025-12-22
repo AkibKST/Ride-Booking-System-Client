@@ -44,16 +44,33 @@ export function LoginForm({
       // }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      console.error(err);
+      console.error("Login Error:", err);
 
-      // if (err.data.message === "Password does not match") {
-      //   toast.error("Invalid credentials");
-      // }
-
-      // if (err.data.message === "User is not verified") {
-      //   toast.error("Your account is not verified");
-      //   navigate("/verify", { state: data.email });
-      // }
+      // Show specific error message from API response
+      if (err?.data?.message) {
+        if (err.data.message === "Password does not match") {
+          toast.error(
+            "Invalid credentials. Please check your email and password."
+          );
+          // } else if (err.data.message === "User is not verified") {
+          //   toast.error("Your account is not verified. Please check your email.");
+          //   navigate("/verify", { state: data.email });
+        } else if (err.data.message === "User not found") {
+          toast.error("No account found with this email address.");
+        } else {
+          toast.error(err.data.message);
+        }
+      } else if (err?.status === 401) {
+        toast.error("Invalid credentials. Please try again.");
+      } else if (err?.status === 429) {
+        toast.error("Too many login attempts. Please try again later.");
+      } else if (err?.status >= 500) {
+        toast.error("Server error. Please try again later.");
+      } else {
+        toast.error(
+          "Failed to login. Please check your connection and try again."
+        );
+      }
     }
   };
 

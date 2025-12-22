@@ -86,7 +86,7 @@ export const router = createBrowserRouter([
         path: "faq",
       },
       {
-        Component: DriverRegister,
+        Component: withAuth(DriverRegister, role.user as TRole), // Protected route for user
         path: "driver-register",
       },
     ],

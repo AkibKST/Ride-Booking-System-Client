@@ -68,8 +68,28 @@ export function RegisterForm({
 
       toast.success("Registration successful! Please verify your email.");
       navigate("/login");
-    } catch (error) {
-      console.log(error);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error("Registration Error:", error);
+
+      // Show specific error message from API response
+      if (error?.data?.message) {
+        if (error.data.message.includes("already exists") || error.data.message.includes("duplicate")) {
+          toast.error("An account with this email already exists. Please login instead.");
+        } else if (error.data.message.includes("invalid email")) {
+          toast.error("Please enter a valid email address.");
+        } else {
+          toast.error(error.data.message);
+        }
+      } else if (error?.status === 400) {
+        toast.error("Invalid registration data. Please check your inputs.");
+      } else if (error?.status === 409) {
+        toast.error("An account with this email already exists.");
+      } else if (error?.status >= 500) {
+        toast.error("Server error. Please try again later.");
+      } else {
+        toast.error("Failed to register. Please check your connection and try again.");
+      }
     }
   };
   return (
