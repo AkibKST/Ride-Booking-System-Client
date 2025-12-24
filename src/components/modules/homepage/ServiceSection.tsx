@@ -31,12 +31,7 @@ const ServiceSection = () => {
               </h1>
 
               <div className="flex w-full flex-col justify-center gap-2 sm:flex-row lg:justify-start">
-                <StarBorder
-                  as="button"
-                  className="custom-class"
-                  color="cyan"
-                  speed="5s"
-                >
+                <StarBorder className="custom-class" color="cyan" speed="5s">
                   <Button
                     onClick={() => navigate("/request-ride")}
                     className="w-full sm:w-auto"
@@ -76,12 +71,7 @@ const ServiceSection = () => {
               </h1>
 
               <div className="flex w-full flex-col justify-center gap-2 sm:flex-row lg:justify-start">
-                <StarBorder
-                  as="button"
-                  className="custom-class"
-                  color="cyan"
-                  speed="5s"
-                >
+                <StarBorder className="custom-class" color="cyan" speed="5s">
                   <Button
                     onClick={() => navigate("/driver-register")}
                     className="w-full sm:w-auto"

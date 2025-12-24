@@ -34,6 +34,7 @@ const navigationLinks = [
   { href: "/admin", label: "Dashboard", role: role.superAdmin },
   { href: "/user", label: "Dashboard", role: role.user },
   { href: "/rider", label: "Dashboard", role: role.rider },
+  { href: "/driver", label: "Dashboard", role: role.driver },
 ];
 
 export default function Navbar() {
@@ -51,7 +52,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="border-b">
+    <header className="sticky top-0 z-50 border-b bg-background">
       <div className="container mx-auto px-8 flex h-16 items-center justify-between gap-4">
         {/* Left side */}
         <div className="flex items-center gap-2">

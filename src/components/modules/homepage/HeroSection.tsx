@@ -70,7 +70,6 @@ const HeroSection = () => {
                   </div>
                   <div className="mt-6 flex justify-center">
                     <StarBorder
-                      as="button"
                       className="custom-class"
                       color="cyan"
                       speed="5s"
