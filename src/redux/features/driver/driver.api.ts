@@ -38,6 +38,16 @@ export const driverApi = baseApi.injectEndpoints({
       transformResponse: (response) => response.data,
       providesTags: ["DRIVER"],
     }),
+
+    // Set driver availability status
+    setDriverAvailability: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/driver/availability/${id}`,
+        method: "PATCH",
+        data,
+      }),
+      invalidatesTags: ["DRIVER"],
+    }),
   }),
 });
 
@@ -46,4 +56,5 @@ export const {
   useGetDriversQuery,
   useAddDriverMutation,
   useGetMyDriverProfileQuery,
+  useSetDriverAvailabilityMutation,
 } = driverApi;
