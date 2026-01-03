@@ -32,6 +32,8 @@ import { withAuth } from "@/utils/withAuth";
 import type { TRole } from "@/types";
 import { role } from "@/constants/role";
 import { riderSidebarItems } from "./riderSidebarItems";
+import Payment from "@/pages/Payment/Payment";
+import ActiveRideForRider from "@/pages/Rider/ActiveRideForRider";
 
 export const router = createBrowserRouter([
   {
@@ -55,7 +57,7 @@ export const router = createBrowserRouter([
         path: "rides/:id",
       },
       {
-        Component: RequestRide,
+        Component: withAuth(RequestRide, role.user as TRole),
         path: "request-ride",
       },
       {
@@ -122,6 +124,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Navigate to="/rider/dashboard" /> },
       { path: "ride-history", Component: RideHistory },
+      { path: "active-ride/:rideId?", Component: ActiveRideForRider },
       ...generateRoutes(riderSidebarItems),
     ],
   },
@@ -132,9 +135,13 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to="/driver/dashboard" /> },
       { path: "dashboard", Component: DriverDashboard },
       { path: "incoming-requests", Component: IncomingRequests },
-      { path: "active-ride", Component: ActiveRide },
+      { path: "active-ride/:rideId?", Component: ActiveRide },
       ...generateRoutes(driverSidebarItems),
     ],
+  },
+  {
+    Component: withAuth(Payment, role.user as TRole), // Protected route for user/rider
+    path: "/payment/:rideId",
   },
   {
     Component: Login,

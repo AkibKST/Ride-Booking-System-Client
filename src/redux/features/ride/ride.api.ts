@@ -1,7 +1,7 @@
 import { baseApi } from "@/redux/baseApi";
 import type { IResponse, IRide, ITourPackage } from "@/types";
 
-export const tourApi = baseApi.injectEndpoints({
+export const rideApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // add ride mutation
     addRideRequest: builder.mutation({
@@ -90,6 +90,79 @@ export const tourApi = baseApi.injectEndpoints({
       providesTags: ["RIDE"],
       transformResponse: (response) => response.data,
     }),
+    // -------------------------------
+
+    // accept ride mutation (driver accepts a ride request)
+    acceptRide: builder.mutation<IRide, string>({
+      query: (rideId) => ({
+        url: `/driver/ride/${rideId}/accept`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["RIDE"],
+      transformResponse: (response: IResponse<IRide>) => response.data,
+    }),
+    // -------------------------------
+
+    // reject ride mutation (driver rejects a ride request)
+    rejectRide: builder.mutation<IRide, string>({
+      query: (rideId) => ({
+        url: `/ride/reject/${rideId}`,
+        method: "POST",
+      }),
+      invalidatesTags: ["RIDE"],
+      transformResponse: (response: IResponse<IRide>) => response.data,
+    }),
+    // -------------------------------
+
+    // update ride status mutation (driver updates ride status)
+    updateRideStatus: builder.mutation<
+      IRide,
+      { rideId: string; status: string }
+    >({
+      query: ({ rideId, status }) => ({
+        url: `/driver/update-ride-status/${rideId}`,
+        method: "PATCH",
+        data: { status },
+      }),
+      invalidatesTags: ["RIDE"],
+      transformResponse: (response: IResponse<IRide>) => response.data,
+    }),
+    // -------------------------------
+
+    // get active ride query (driver's current active ride)
+    getActiveRide: builder.query<IRide | null, void>({
+      query: () => ({
+        url: "/ride/active",
+        method: "GET",
+      }),
+      providesTags: ["RIDE"],
+      transformResponse: (response: IResponse<IRide | null>) => response.data,
+    }),
+    // -------------------------------
+
+    // get ride history query (user's completed/cancelled rides)
+    getRideHistory: builder.query<IRide[], { status?: string }>({
+      query: (params) => ({
+        url: "/ride/history",
+        method: "GET",
+        params: params,
+      }),
+      providesTags: ["RIDE"],
+      transformResponse: (response: IResponse<IRide[]>) => response.data,
+    }),
+    // -------------------------------
+
+    // initiate payment mutation (SSL Commerz payment initiation)
+    initiatePayment: builder.mutation<{ paymentUrl: string }, string>({
+      query: (rideId) => ({
+        url: `/payment/initiate`,
+        method: "POST",
+        data: { rideId },
+      }),
+      transformResponse: (response: IResponse<{ paymentUrl: string }>) =>
+        response.data,
+    }),
+    // -------------------------------
   }),
 });
 
@@ -99,4 +172,10 @@ export const {
   useGetAllRidesQuery,
   useGetRideQuery,
   useGetRequestedRidesQuery,
-} = tourApi;
+  useAcceptRideMutation,
+  useRejectRideMutation,
+  useUpdateRideStatusMutation,
+  useGetActiveRideQuery,
+  useGetRideHistoryQuery,
+  useInitiatePaymentMutation,
+} = rideApi;

@@ -3,7 +3,7 @@
 import RiderDashboard from "@/pages/Rider/Dashboard";
 import type { ISidebarItem } from "@/types";
 
-import { History, LayoutDashboard } from "lucide-react";
+import { History, LayoutDashboard, Navigation } from "lucide-react";
 
 export const riderSidebarItems: ISidebarItem[] = [
   {
@@ -19,6 +19,11 @@ export const riderSidebarItems: ISidebarItem[] = [
         title: "Ride History",
         url: "ride-history",
         icon: History,
+      },
+      {
+        title: "Active Ride",
+        url: "/rider/active-ride",
+        icon: Navigation,
       },
     ],
   },

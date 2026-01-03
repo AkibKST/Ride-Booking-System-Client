@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,12 +12,18 @@ import {
 import { MapPin, Navigation, User } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
-import { useGetRequestedRidesQuery } from "@/redux/features/ride/ride.api";
+import {
+  useGetRequestedRidesQuery,
+  useAcceptRideMutation,
+  useRejectRideMutation,
+} from "@/redux/features/ride/ride.api";
 import RideMapPreview from "@/components/RideMapPreview";
 import LocationAddress from "@/components/LocationAddress";
+import { useState } from "react";
 
 export default function IncomingRequests() {
   const navigate = useNavigate();
+  const [processingRideId, setProcessingRideId] = useState<string | null>(null);
 
   // Fetch rides with status="requested" from API
   const {
@@ -30,16 +35,41 @@ export default function IncomingRequests() {
     refetchOnMountOrArgChange: true,
   });
 
-  const handleAccept = (_id: string) => {
-    toast.success("Ride Accepted! Navigating to active ride...");
-    // TODO: Call API to accept ride
-    // In a real app, this would update the backend
-    navigate("/driver/active-ride");
+  // Accept ride mutation
+  const [acceptRide, { isLoading: isAccepting }] = useAcceptRideMutation();
+
+  // Reject ride mutation
+  const [rejectRide, { isLoading: isRejecting }] = useRejectRideMutation();
+
+  const handleAccept = async (rideId: string) => {
+    try {
+      setProcessingRideId(rideId);
+      await acceptRide(rideId).unwrap();
+      toast.success("Ride Accepted! Navigating to active ride...");
+      navigate(`/driver/active-ride/${rideId}`);
+    } catch (err: any) {
+      console.error("Failed to accept ride:", err);
+      toast.error(
+        err?.data?.message || "Failed to accept ride. Please try again."
+      );
+    } finally {
+      setProcessingRideId(null);
+    }
   };
 
-  const handleReject = (_id: string) => {
-    toast.info("Ride Rejected");
-    // TODO: Call API to reject ride
+  const handleReject = async (rideId: string) => {
+    try {
+      setProcessingRideId(rideId);
+      await rejectRide(rideId).unwrap();
+      toast.info("Ride Rejected");
+    } catch (err: any) {
+      console.error("Failed to reject ride:", err);
+      toast.error(
+        err?.data?.message || "Failed to reject ride. Please try again."
+      );
+    } finally {
+      setProcessingRideId(null);
+    }
   };
 
   return (
@@ -140,10 +170,24 @@ export default function IncomingRequests() {
                 <Button
                   variant="outline"
                   onClick={() => handleReject(ride._id)}
+                  disabled={
+                    processingRideId === ride._id || isRejecting || isAccepting
+                  }
                 >
-                  Reject
+                  {processingRideId === ride._id && isRejecting
+                    ? "Rejecting..."
+                    : "Reject"}
                 </Button>
-                <Button onClick={() => handleAccept(ride._id)}>Accept</Button>
+                <Button
+                  onClick={() => handleAccept(ride._id)}
+                  disabled={
+                    processingRideId === ride._id || isAccepting || isRejecting
+                  }
+                >
+                  {processingRideId === ride._id && isAccepting
+                    ? "Accepting..."
+                    : "Accept"}
+                </Button>
               </CardFooter>
             </Card>
           ))}

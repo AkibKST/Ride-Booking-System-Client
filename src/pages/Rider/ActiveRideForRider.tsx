@@ -14,21 +14,12 @@ import { useNavigate, useParams } from "react-router";
 import {
   useGetActiveRideQuery,
   useGetRideQuery,
-  useUpdateRideStatusMutation,
 } from "@/redux/features/ride/ride.api";
 import { Spinner } from "@/components/ui/spinner";
 import RideMapPreview from "@/components/RideMapPreview";
 import LocationAddress from "@/components/LocationAddress";
 
-const statusProgression = ["accepted", "picked_up", "in_transit", "completed"];
-const statusLabels = {
-  accepted: "Picked Up",
-  picked_up: "In Transit",
-  in_transit: "Complete Ride",
-  completed: "Completed",
-};
-
-export default function ActiveRide() {
+export default function ActiveRideForRider() {
   const navigate = useNavigate();
   const { rideId } = useParams();
 
@@ -55,48 +46,6 @@ export default function ActiveRide() {
   const ride = rideId ? specificRide : activeRide;
   const isLoading = rideId ? isLoadingSpecific : isLoadingActive;
   const error = rideId ? specificError : activeError;
-
-  const [updateRideStatus, { isLoading: isUpdating }] =
-    useUpdateRideStatusMutation();
-
-  const getCurrentStatusIndex = () => {
-    if (!ride?.status) return 0;
-    const index = statusProgression.indexOf(ride.status);
-    return index === -1 ? 0 : index;
-  };
-
-  const handleStatusUpdate = async () => {
-    if (!ride) return;
-
-    const currentIndex = getCurrentStatusIndex();
-
-    if (currentIndex < statusProgression.length - 1) {
-      const nextStatus = statusProgression[currentIndex + 1];
-
-      try {
-        await updateRideStatus({
-          rideId: ride._id,
-          status: nextStatus,
-        }).unwrap();
-
-        toast.success(
-          `Status updated to: ${
-            statusLabels[nextStatus as keyof typeof statusLabels]
-          }`
-        );
-
-        // If completed, navigate to payment
-        if (nextStatus === "completed") {
-          setTimeout(() => {
-            navigate("/driver/dashboard");
-          }, 1500);
-        }
-      } catch (err: any) {
-        console.error("Failed to update status:", err);
-        toast.error(err?.data?.message || "Failed to update ride status");
-      }
-    }
-  };
 
   const handleSOS = () => {
     toast.error("SOS Alert Sent! Emergency contacts notified.");
@@ -131,17 +80,6 @@ export default function ActiveRide() {
       </div>
     );
   }
-
-  const currentStatusIndex = getCurrentStatusIndex();
-  const currentStatusLabel =
-    statusLabels[ride.status as keyof typeof statusLabels] || ride.status;
-  const nextStatus =
-    currentStatusIndex < statusProgression.length - 1
-      ? statusProgression[currentStatusIndex + 1]
-      : null;
-  const nextStatusLabel = nextStatus
-    ? statusLabels[nextStatus as keyof typeof statusLabels]
-    : null;
 
   // Get rider info - handle both object and string userId
   const riderInfo = typeof ride.userId === "object" ? ride.userId : null;
@@ -249,18 +187,7 @@ export default function ActiveRide() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button
-              className="w-full"
-              size="lg"
-              onClick={handleStatusUpdate}
-              disabled={isUpdating || ride.status === "completed"}
-            >
-              {isUpdating
-                ? "Updating..."
-                : nextStatusLabel
-                ? `Mark as ${nextStatusLabel}`
-                : "Completed"}
-            </Button>
+            <p>Have a safe journey!</p>
           </CardFooter>
         </Card>
 
@@ -269,7 +196,7 @@ export default function ActiveRide() {
           <CardHeader>
             <div className="flex justify-between items-center">
               <CardTitle>Live Route</CardTitle>
-              <Badge className="capitalize">{currentStatusLabel}</Badge>
+              <Badge className="capitalize">{ride.status}</Badge>
             </div>
           </CardHeader>
           <CardContent className="flex-1 flex flex-col gap-6">
@@ -296,8 +223,8 @@ export default function ActiveRide() {
             <div className="bg-muted/30 p-4 rounded-lg">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium">Ride Progress</span>
-                <span className="text-sm text-muted-foreground">
-                  {currentStatusIndex + 1} / {statusProgression.length}
+                <span className="text-sm text-muted-foreground"></span>
+                {/* {currentStatusIndex + 1} / {statusProgression.length}
                 </span>
               </div>
               <div className="flex gap-2">
@@ -315,7 +242,7 @@ export default function ActiveRide() {
                   <span key={status} className="capitalize">
                     {statusLabels[status as keyof typeof statusLabels]}
                   </span>
-                ))}
+                ))} */}
               </div>
             </div>
           </CardContent>

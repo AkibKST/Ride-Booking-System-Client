@@ -11,6 +11,7 @@ import { toast } from "sonner";
 
 export default function UserRideDetails() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [previousStatus, setPreviousStatus] = useState<string | null>(null);
 
     // Poll every 5 seconds when status is "requested"
@@ -24,14 +25,27 @@ export default function UserRideDetails() {
     // This must be before any conditional returns to follow Rules of Hooks
     useEffect(() => {
         if (ride?.status && previousStatus && ride.status !== previousStatus) {
+            // Show different notifications for different status transitions
             if (previousStatus === "requested" && ride.status === "accepted") {
                 toast.success("🎉 Driver accepted your ride!");
+            } else if (previousStatus === "accepted" && ride.status === "picked_up") {
+                toast.success("🚗 Driver has picked you up!");
+            } else if (previousStatus === "picked_up" && ride.status === "in_progress") {
+                toast.info("🛣️ Your ride is now in progress!");
+            } else if (previousStatus === "in_progress" && ride.status === "completed") {
+                toast.success("✅ Ride completed! Redirecting to payment...");
+                // Navigate to payment page after a short delay
+                setTimeout(() => {
+                    navigate(`/payment/${ride._id}`);
+                }, 2000);
+            } else if (ride.status === "cancelled") {
+                toast.error("❌ Ride has been cancelled");
             }
         }
         if (ride?.status) {
             setPreviousStatus(ride.status);
         }
-    }, [ride?.status, previousStatus]);
+    }, [ride?.status, previousStatus, ride?._id, navigate]);
 
     if (isLoading) {
         return (

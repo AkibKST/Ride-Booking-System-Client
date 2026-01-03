@@ -4,7 +4,7 @@ import type { ISidebarItem } from "@/types";
 import { lazy } from "react";
 
 //UX and Performance Enhancements with Lazy Loading
-const Analytics = lazy(() => import("@/pages/Admin/Analytics"));
+const Analytics = lazy(() => import("@/pages/Admin/Dashboard"));
 const UserManagement = lazy(() => import("@/pages/Admin/UserManagement"));
 
 import { BarChart3, Car, MapPin, PlusCircle, Users } from "lucide-react";
@@ -18,7 +18,7 @@ export const adminSidebarItems: ISidebarItem[] = [
     items: [
       {
         title: "Analytics",
-        url: "/admin/analytics",
+        url: "/admin/dashboard",
         component: Analytics,
         icon: BarChart3,
       },
