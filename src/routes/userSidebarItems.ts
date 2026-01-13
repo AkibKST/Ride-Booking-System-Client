@@ -3,7 +3,7 @@
 import UserDashboard from "@/pages/User/Dashboard";
 import type { ISidebarItem } from "@/types";
 
-import { History, LayoutDashboard, MapPin } from "lucide-react";
+import { History, LayoutDashboard, MapPin, User, Settings } from "lucide-react";
 
 export const userSidebarItems: ISidebarItem[] = [
   {
@@ -25,7 +25,16 @@ export const userSidebarItems: ISidebarItem[] = [
         url: "ride-history",
         icon: History,
       },
+      {
+        title: "Profile",
+        url: "/user/profile",
+        icon: User,
+      },
+      {
+        title: "Settings",
+        url: "/user/settings",
+        icon: Settings,
+      },
     ],
   },
-
 ];

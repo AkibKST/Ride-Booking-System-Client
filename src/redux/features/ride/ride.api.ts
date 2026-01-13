@@ -14,6 +14,16 @@ export const rideApi = baseApi.injectEndpoints({
       //for cache invalidation
       invalidatesTags: ["RIDE"],
     }),
+
+    // cancel ride mutation
+    cancelRide: builder.mutation<IRide, string>({
+      query: (rideId) => ({
+        url: `/ride/cancel/${rideId}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["RIDE"],
+    }),
+    // -------------------------------
     // -------------------------------
 
     // add tour type mutation
@@ -168,6 +178,7 @@ export const rideApi = baseApi.injectEndpoints({
 
 export const {
   useAddRideRequestMutation,
+  useCancelRideMutation,
   useAddRideTypeMutation,
   useGetAllRidesQuery,
   useGetRideQuery,

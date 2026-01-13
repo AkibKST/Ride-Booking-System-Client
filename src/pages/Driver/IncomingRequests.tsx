@@ -20,6 +20,7 @@ import {
 import RideMapPreview from "@/components/RideMapPreview";
 import LocationAddress from "@/components/LocationAddress";
 import { useState } from "react";
+import PageHeader from "@/components/PageHeader";
 
 export default function IncomingRequests() {
   const navigate = useNavigate();
@@ -93,7 +94,7 @@ export default function IncomingRequests() {
           No new requests at the moment. Stay online!
         </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {requestedRides.map((ride: any) => (
             <Card key={ride._id} className="flex flex-col">
               <CardHeader>
@@ -128,7 +129,7 @@ export default function IncomingRequests() {
                       Pickup
                     </p>
                     {ride.pickupLocation?.latitude &&
-                    ride.pickupLocation?.longitude ? (
+                      ride.pickupLocation?.longitude ? (
                       <LocationAddress
                         latitude={ride.pickupLocation.latitude}
                         longitude={ride.pickupLocation.longitude}
@@ -150,7 +151,7 @@ export default function IncomingRequests() {
                       Dropoff
                     </p>
                     {ride.dropLocation?.latitude &&
-                    ride.dropLocation?.longitude ? (
+                      ride.dropLocation?.longitude ? (
                       <LocationAddress
                         latitude={ride.dropLocation.latitude}
                         longitude={ride.dropLocation.longitude}

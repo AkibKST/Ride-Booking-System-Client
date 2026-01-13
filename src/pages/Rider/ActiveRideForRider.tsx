@@ -19,6 +19,7 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import RideMapPreview from "@/components/RideMapPreview";
 import LocationAddress from "@/components/LocationAddress";
+import PageHeader from "@/components/PageHeader";
 
 export default function ActiveRideForRider() {
   const navigate = useNavigate();
@@ -73,18 +74,28 @@ export default function ActiveRideForRider() {
 
   if (error || !ride) {
     return (
-      <div className="space-y-6">
-        <h1 className="text-3xl font-bold">Active Ride</h1>
-        <Card>
+      <div className="container mx-auto p-4 space-y-6">
+        <PageHeader
+          title="Active Ride"
+          description="Track your current ride status"
+          icon={<Navigation className="h-6 w-6 text-white" />}
+        />
+        <Card className="border-dashed border-2">
           <CardContent className="pt-6">
-            <div className="text-center py-12">
-              <p className="text-muted-foreground mb-4">
-                {error
-                  ? "Error loading ride details"
-                  : "No active ride at the moment"}
+            <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
+              <div className="h-16 w-16 rounded-full bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center mb-2">
+                <MapPin className="h-8 w-8 text-violet-600 dark:text-violet-400" />
+              </div>
+              <h2 className="text-xl font-semibold">No Active Ride</h2>
+              <p className="text-muted-foreground max-w-md">
+                You don't have any ongoing trips at the moment. Ready to go somewhere?
               </p>
-              <Button onClick={() => navigate("/driver/incoming-requests")}>
-                View Incoming Requests
+              <Button
+                className="mt-4"
+                onClick={() => navigate("/request-ride")}
+                size="lg"
+              >
+                Request a Ride
               </Button>
             </div>
           </CardContent>
@@ -102,16 +113,19 @@ export default function ActiveRideForRider() {
   console.log(driverInfo);
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Active Ride</h1>
-        <Button variant="destructive" onClick={handleSOS} className="gap-2">
-          <AlertTriangle className="h-4 w-4" />
-          SOS Emergency
-        </Button>
-      </div>
-
-      <div className="grid gap-6 lg:grid-cols-3">
+    <div className="container mx-auto p-4 space-y-6">
+      <PageHeader
+        title="Active Ride"
+        description="Track your current ride status and location"
+        icon={<Navigation className="h-6 w-6 text-white" />}
+        action={
+          <Button variant="destructive" onClick={handleSOS} className="gap-2 shadow-lg">
+            <AlertTriangle className="h-4 w-4" />
+            SOS Emergency
+          </Button>
+        }
+      />
+      <div className="grid gap-6 md:grid-cols-3">
         {/* Ride Details */}
         <Card className="lg:col-span-1">
           <CardHeader>
@@ -145,7 +159,7 @@ export default function ActiveRideForRider() {
                     Pickup
                   </p>
                   {ride.pickupLocation?.latitude &&
-                  ride.pickupLocation?.longitude ? (
+                    ride.pickupLocation?.longitude ? (
                     <LocationAddress
                       latitude={ride.pickupLocation.latitude}
                       longitude={ride.pickupLocation.longitude}
@@ -165,7 +179,7 @@ export default function ActiveRideForRider() {
                     Dropoff
                   </p>
                   {ride.dropLocation?.latitude &&
-                  ride.dropLocation?.longitude ? (
+                    ride.dropLocation?.longitude ? (
                     <LocationAddress
                       latitude={ride.dropLocation.latitude}
                       longitude={ride.dropLocation.longitude}

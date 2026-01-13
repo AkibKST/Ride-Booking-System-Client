@@ -8,6 +8,18 @@ import { Link, useNavigate, useParams } from "react-router";
 import { Spinner } from "@/components/ui/spinner";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useCancelRideMutation } from "@/redux/features/ride/ride.api";
 
 export default function UserRideDetails() {
   const { id } = useParams();
@@ -20,6 +32,20 @@ export default function UserRideDetails() {
     pollingInterval: 5000, // Poll every 5 seconds
     refetchOnMountOrArgChange: true,
   });
+
+  const [cancelRide, { isLoading: isCancelling }] = useCancelRideMutation();
+
+  const handleCancelRide = async () => {
+    if (!id) return;
+    try {
+      await cancelRide(id).unwrap();
+      toast.success("Ride request cancelled successfully");
+      navigate("/ride-history");
+    } catch (error) {
+      console.error("Failed to cancel ride:", error);
+      toast.error("Failed to cancel ride request");
+    }
+  };
 
   // Detect status changes and show notifications
   // This must be before any conditional returns to follow Rules of Hooks
@@ -106,20 +132,46 @@ export default function UserRideDetails() {
                       />
                     </svg>
                   </div>
-                  <div className="absolute inset-0 rounded-full bg-violet-400 dark:bg-violet-600 animate-ping opacity-20"></div>
+                  <div className="absolute top-0 left-0 h-16 w-16 rounded-full border-4 border-violet-400 opacity-20 animate-ping"></div>
                 </div>
               </div>
-
               <div>
-                <h2 className="text-2xl font-bold text-violet-900 dark:text-violet-100 mb-2">
-                  🚗 Waiting for Driver to Accept
-                </h2>
+                <h3 className="text-xl font-semibold text-violet-900 dark:text-violet-100">
+                  Looking for nearby drivers...
+                </h3>
                 <p className="text-violet-700 dark:text-violet-300">
-                  We're finding a driver for you. This usually takes less than a
-                  minute...
+                  Please wait while we match you with the best driver.
                 </p>
               </div>
 
+              {/* Cancel Request Button */}
+              <div className="pt-4">
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="destructive" disabled={isCancelling}>
+                      {isCancelling ? "Cancelling..." : "Cancel Request"}
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Cancel Ride Request</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Are you sure you want to cancel this ride request? This
+                        action cannot be undone.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Keep Waiting</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={handleCancelRide}
+                        className="bg-red-600 hover:bg-red-700 text-white"
+                      >
+                        Yes, Cancel Request
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
               {/* Ride Estimate Summary */}
               <div className="flex justify-center gap-6 pt-4">
                 {ride.distance && (

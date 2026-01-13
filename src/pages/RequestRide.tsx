@@ -1,4 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+/**
+ * ============================================================================
+ * IMPORTS SECTION
+ * ============================================================================
+ * Component and UI library imports for form handling, notifications, and UI
+ */
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -28,8 +35,23 @@ import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import { Spinner } from "@/components/ui/spinner";
 import { useAddRideRequestMutation } from "@/redux/features/ride/ride.api";
 import { getRideEstimate, type RideEstimate } from "@/utils/rideCalculations";
+import PageHeader from "@/components/PageHeader";
+import { Navigation } from "lucide-react";
 
-// ------------------Form Schema using Zod-----------------------
+/**
+ * ============================================================================
+ * FORM VALIDATION SCHEMA
+ * ============================================================================
+ * Zod schema for form validation and type safety
+ *
+ * Fields:
+ * - pickupLocation: Starting point address (min 2 characters)
+ * - dropoffLocation: Destination address (min 2 characters)
+ * - distance: Calculated trip distance in kilometers
+ * - fare: Calculated trip fare amount
+ * - duration: Estimated trip duration
+ * - status: Ride request status (default: "requested")
+ */
 const formSchema = z.object({
   pickupLocation: z.string().min(2, {
     message: "Pickup location must be at least 2 characters.",
@@ -44,11 +66,34 @@ const formSchema = z.object({
     .enum(["requested", "accepted", "in_progress", "completed", "cancelled"])
     .default("requested"),
 });
-// ------------------------------------------------------------
 
-// ------------------Request Ride Component-----------------------
+/**
+ * ============================================================================
+ * REQUEST RIDE COMPONENT
+ * ============================================================================
+ * Main component for handling ride requests with interactive map-based
+ * location selection and real-time fare estimation.
+ *
+ * Key Features:
+ * • Interactive map-based location selection (pickup & dropoff)
+ * • Real-time ride fare, distance, and duration estimation
+ * • Form validation using Zod schema
+ * • Role-based access control (riders only, not drivers)
+ * • Automatic navigation to ride details page after successful booking
+ *
+ * @component
+ * @returns {JSX.Element} The RequestRide component UI
+ */
 export default function RequestRide() {
   const navigate = useNavigate();
+
+  /**
+   * ========================================================================
+   * FORM INITIALIZATION
+   * ========================================================================
+   * Initializes form with react-hook-form and Zod validation resolver
+   * Sets default values for all form fields
+   */
   const form = useForm<z.input<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -60,10 +105,29 @@ export default function RequestRide() {
     },
   });
 
-  // ------------------Add Ride Request Mutation-----------------------
+  /**
+   * ========================================================================
+   * API MUTATIONS & QUERIES
+   * ========================================================================
+   */
+
+  /**
+   * Mutation hook for submitting ride request to backend
+   * Handles the API call to create a new ride request
+   */
   const [addRideRequest] = useAddRideRequestMutation();
 
-  // ------------------Map Location Selection-----------------------
+  /**
+   * ========================================================================
+   * STATE MANAGEMENT - LOCATION SELECTION
+   * ========================================================================
+   * Tracks user interactions with the map picker and selected coordinates
+   */
+
+  /**
+   * Active field state: determines which location (pickup/dropoff) is
+   * currently being edited on the interactive map
+   */
   const [activeField, setActiveField] = useState<"pickup" | "dropoff">(
     "pickup"
   );
@@ -75,13 +139,34 @@ export default function RequestRide() {
     lat: number;
     lng: number;
   } | null>(null);
-  // ------------------------------------------------------------
 
-  // ------------------Ride Estimate State-----------------------
+  /**
+   * ========================================================================
+   * STATE MANAGEMENT - RIDE ESTIMATION
+   * ========================================================================
+   */
+
+  /**
+   * Ride estimate state containing calculated fare, distance, and duration
+   * Updated automatically when both pickup and dropoff coordinates are set
+   */
   const [rideEstimate, setRideEstimate] = useState<RideEstimate | null>(null);
-  // ------------------------------------------------------------
 
-  // ------------------Handle Location Selection from MapPicker-----------------------
+  /**
+   * ========================================================================
+   * EVENT HANDLERS
+   * ========================================================================
+   */
+
+  /**
+   * Handle Location Selection from MapPicker Component
+   *
+   * Processes map click events to set either pickup or dropoff location
+   * Stores GPS coordinates and updates form field with formatted address
+   *
+   * @param lat - Latitude coordinate selected on map
+   * @param lng - Longitude coordinate selected on map
+   */
   const handleLocationSelect = (lat: number, lng: number) => {
     const coords = { lat, lng };
     const address = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
@@ -94,9 +179,22 @@ export default function RequestRide() {
       form.setValue("dropoffLocation", address);
     }
   };
-  // ------------------------------------------------------------
 
-  // ------------------Calculate Ride Estimate-----------------------
+  /**
+   * ========================================================================
+   * EFFECT HOOKS
+   * ========================================================================
+   */
+
+  /**
+   * Calculate Ride Estimate Effect
+   *
+   * Triggered whenever pickup or dropoff coordinates change
+   * Calculates distance, fare, and duration using the getRideEstimate utility
+   * Automatically populates form fields with calculated values
+   *
+   * Dependencies: [pickupCoords, dropoffCoords, form]
+   */
   useEffect(() => {
     if (pickupCoords && dropoffCoords) {
       const estimate = getRideEstimate(pickupCoords, dropoffCoords);
@@ -109,15 +207,26 @@ export default function RequestRide() {
       setRideEstimate(null);
     }
   }, [pickupCoords, dropoffCoords, form]);
-  // ------------------------------------------------------------
 
-  // ------------------Transform Data for post in backend-----------------------
+  /**
+   * ========================================================================
+   * AUTHENTICATION & AUTHORIZATION
+   * ========================================================================
+   */
+
+  /**
+   * User authentication query hook
+   * Fetches current user information including role and ID
+   */
   const { data: userInfo, isLoading } = useUserInfoQuery(undefined);
 
   const userId = userInfo?.data?.data?._id;
   const userRole = userInfo?.data?.data?.role;
 
-  //if user data is loading
+  /**
+   * Loading State Handler
+   * Display loading spinner while fetching user information
+   */
   if (isLoading) {
     return (
       <div className="container mx-auto py-10 flex flex-col items-center gap-6">
@@ -126,7 +235,11 @@ export default function RequestRide() {
     );
   }
 
-  //if user is Driver role
+  /**
+   * Role-Based Access Control
+   * Prevents drivers from accessing the ride request feature
+   * Only riders (non-driver users) can request rides
+   */
   if (userRole === "Driver") {
     return (
       <section>
@@ -140,10 +253,44 @@ export default function RequestRide() {
       </section>
     );
   }
-  // ------------------------------------------------------------
 
-  // ------------------On Submit Form-----------------------
+  /**
+   * ========================================================================
+   * FORM SUBMISSION HANDLER
+   * ========================================================================
+   */
+
+  /**
+   * Handle Ride Request Form Submission
+   *
+   * Main form submission handler that processes ride request data
+   *
+   * Process Flow:
+   * 1. Transform form values into backend-compatible format
+   * 2. Include location coordinates and calculated ride estimates
+   * 3. Submit ride request to backend API
+   * 4. Handle success/error responses with user notifications
+   * 5. Navigate to ride details page on successful submission
+   *
+   * @param values - Validated form field values from react-hook-form
+   */
   async function onSubmit(values: z.input<typeof formSchema>) {
+    /**
+     * Transform Ride Request Data
+     *
+     * Converts form input and state values into the API request format
+     * Structures location data with both address and GPS coordinates
+     * Includes calculated fare, distance, and duration estimates
+     *
+     * @param values - Form values including addresses and status
+     * @param fare - Calculated fare amount
+     * @param distance - Calculated distance in kilometers
+     * @param duration - Estimated duration string
+     * @param userId - Current user's ID for ride association
+     * @param pickupCoords - Pickup location GPS coordinates
+     * @param dropoffCoords - Dropoff location GPS coordinates
+     * @returns Formatted ride data object for backend submission
+     */
     const transformRideData = (
       values: {
         pickupLocation: string;
@@ -182,7 +329,7 @@ export default function RequestRide() {
       };
     };
 
-    // prepare ride data
+    // Prepare ride data with current form values and estimates
     const rideData = transformRideData(
       values,
       rideEstimate ? rideEstimate.fare : 0,
@@ -193,29 +340,57 @@ export default function RequestRide() {
       dropoffCoords
     );
 
-    console.log("=== RIDE REQUEST DEBUG ===");
-    console.log("Ride Estimate:", rideEstimate);
-    console.log("Prepared Ride Data:", rideData);
-    console.log("Fare being sent:", rideData.fare);
+    /**
+     * Debug Logging (Commented out)
+     * Uncomment for development/testing purposes
+     */
+    // console.log("=== RIDE REQUEST DEBUG ===");
+    // console.log("Ride Estimate:", rideEstimate);
+    // console.log("Prepared Ride Data:", rideData);
+    // console.log("Fare being sent:", rideData.fare);
 
-    // call add ride request mutation
+    /**
+     * Submit Ride Request to Backend
+     * Handle success and error scenarios with user feedback
+     */
     try {
       const res = await addRideRequest(rideData).unwrap();
       console.log("Backend Response:", res);
+
+      // Show success notification
       toast.success(`Ride requested successfully!`);
+
+      // Reset form fields
       form.reset();
+
+      // Navigate to ride details page if ride was created
       if (res?.data?._id) {
         navigate(`/user-ride-details/${res.data._id}`);
       }
     } catch (err: any) {
       console.error("Request Ride Error:", err);
+      // Show error notification with backend message or fallback message
       toast.error(err?.data?.message || "Failed to request ride");
     }
   }
-  // ---------------------------------------------------------------------------
+
+  /**
+   * ========================================================================
+   * COMPONENT RENDER
+   * ========================================================================
+   */
 
   return (
-    <div className="container mx-auto py-10 flex flex-col items-center gap-6">
+    <div className="container mx-auto py-6 flex flex-col items-center gap-6">
+      {/* Page Header Section */}
+      <PageHeader
+        className="w-full max-w-4xl"
+        title="Request a Ride"
+        description="Book your ride by selecting pickup and dropoff locations"
+        icon={<Navigation className="h-6 w-6 text-white" />}
+      />
+
+      {/* Map Location Picker Card */}
       <Card className="w-full max-w-4xl">
         <CardHeader>
           <CardTitle>Select Location</CardTitle>
@@ -224,6 +399,7 @@ export default function RequestRide() {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {/* Toggle Buttons for Pickup/Dropoff Selection */}
           <div className="flex gap-4 mb-4">
             <Button
               variant={activeField === "pickup" ? "default" : "outline"}
@@ -240,6 +416,8 @@ export default function RequestRide() {
               Set Dropoff
             </Button>
           </div>
+
+          {/* Interactive Map Component */}
           <MapPicker
             onLocationSelect={handleLocationSelect}
             selectedLocation={
@@ -249,7 +427,7 @@ export default function RequestRide() {
         </CardContent>
       </Card>
 
-      {/* Fare Estimate Card */}
+      {/* Fare Estimate Display Card */}
       {rideEstimate && (
         <Card className="w-full max-w-4xl bg-gradient-to-br from-violet-50 to-purple-50 dark:from-violet-950/20 dark:to-purple-950/20 border-violet-200 dark:border-violet-800">
           <CardHeader>
@@ -262,7 +440,7 @@ export default function RequestRide() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Distance */}
+              {/* Distance Card */}
               <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-violet-100 dark:border-violet-900">
                 <div className="flex flex-col items-center gap-2">
                   <svg
@@ -289,7 +467,7 @@ export default function RequestRide() {
                 </div>
               </div>
 
-              {/* Duration */}
+              {/* Duration Card */}
               <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-violet-100 dark:border-violet-900">
                 <div className="flex flex-col items-center gap-2">
                   <svg
@@ -316,7 +494,7 @@ export default function RequestRide() {
                 </div>
               </div>
 
-              {/* Fare */}
+              {/* Fare Card (Highlighted) */}
               <div className="bg-gradient-to-br from-violet-600 to-purple-600 p-4 rounded-lg shadow-md">
                 <div className="flex flex-col items-center gap-2">
                   <svg
@@ -342,7 +520,7 @@ export default function RequestRide() {
               </div>
             </div>
 
-            {/* Disclaimer */}
+            {/* Disclaimer Message */}
             <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-md">
               <p className="text-xs text-amber-800 dark:text-amber-200 text-center">
                 ⓘ This is an estimated fare. Actual fare may vary based on
@@ -353,7 +531,8 @@ export default function RequestRide() {
         </Card>
       )}
 
-      <Card className="w-full max-w-md">
+      {/* Ride Request Form Card */}
+      <Card className="w-full max-w-4xl">
         <CardHeader>
           <CardTitle>Request a Ride</CardTitle>
           <CardDescription>
@@ -363,6 +542,7 @@ export default function RequestRide() {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              {/* Pickup Location Field */}
               <FormField
                 control={form.control}
                 name="pickupLocation"
@@ -389,6 +569,8 @@ export default function RequestRide() {
                   </FormItem>
                 )}
               />
+
+              {/* Dropoff Location Field */}
               <FormField
                 control={form.control}
                 name="dropoffLocation"
@@ -416,6 +598,7 @@ export default function RequestRide() {
                 )}
               />
 
+              {/* Submit Button */}
               <Button
                 type="submit"
                 className="w-full"
@@ -426,6 +609,7 @@ export default function RequestRide() {
                   : "Request Ride"}
               </Button>
 
+              {/* Helper Message */}
               {!rideEstimate && (
                 <p className="text-sm text-muted-foreground text-center">
                   Please select both pickup and dropoff locations on the map

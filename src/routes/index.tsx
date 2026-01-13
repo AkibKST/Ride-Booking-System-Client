@@ -19,6 +19,7 @@ import RequestRide from "@/pages/RequestRide";
 import RideHistory from "@/pages/RideHistory";
 import UserRideDetails from "@/pages/UserRideDetails";
 import Profile from "@/pages/Profile";
+import Settings from "@/pages/Settings";
 import Features from "@/pages/Features";
 import Contact from "@/pages/Contact";
 import Faq from "@/pages/Faq";
@@ -108,6 +109,8 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to="/admin/dashboard" /> },
       { path: "dashboard", Component: AdminDashboard },
       { path: "rides", Component: Rides },
+      { path: "profile", Component: Profile },
+      { path: "settings", Component: Settings },
       ...generateRoutes(adminSidebarItems),
     ],
   },
@@ -118,6 +121,8 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to="/user/dashboard" /> },
       { path: "request-ride", Component: RequestRide },
       { path: "ride-history", Component: RideHistory },
+      { path: "profile", Component: Profile },
+      { path: "settings", Component: Settings },
       ...generateRoutes(userSidebarItems),
     ],
   },
@@ -129,6 +134,8 @@ export const router = createBrowserRouter([
       { path: "request-ride", Component: RequestRide },
       { path: "ride-history", Component: RideHistory },
       { path: "active-ride/:rideId?", Component: ActiveRideForRider },
+      { path: "profile", Component: Profile },
+      { path: "settings", Component: Settings },
       ...generateRoutes(riderSidebarItems),
     ],
   },
@@ -140,6 +147,9 @@ export const router = createBrowserRouter([
       { path: "dashboard", Component: DriverDashboard },
       { path: "incoming-requests", Component: IncomingRequests },
       { path: "active-ride/:rideId?", Component: ActiveRide },
+      { path: "ride-history", Component: RideHistory },
+      { path: "profile", Component: Profile },
+      { path: "settings", Component: Settings },
       ...generateRoutes(driverSidebarItems),
     ],
   },

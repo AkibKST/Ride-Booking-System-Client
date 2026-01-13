@@ -21,6 +21,8 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { useGetRideHistoryQuery } from "@/redux/features/ride/ride.api";
 import { Spinner } from "@/components/ui/spinner";
+import PageHeader from "@/components/PageHeader";
+import { History } from "lucide-react";
 
 export default function RideHistory() {
     const [filterStatus, setFilterStatus] = useState<string>("all");
@@ -60,7 +62,12 @@ export default function RideHistory() {
     };
 
     return (
-        <div className="container mx-auto py-10">
+        <div className="space-y-6">
+            <PageHeader
+                title="Ride History"
+                description="View all your past and ongoing rides"
+                icon={<History className="h-6 w-6 text-white" />}
+            />
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle>Ride History</CardTitle>

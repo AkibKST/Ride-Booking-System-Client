@@ -30,6 +30,8 @@ import z from "zod";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import { useAddDriverMutation } from "@/redux/features/driver/driver.api";
 import { useNavigate } from "react-router";
+import PageHeader from "@/components/PageHeader";
+import { Car } from "lucide-react";
 
 const driverRegisterSchema = z.object({
   licenseNumber: z
@@ -177,12 +179,17 @@ export default function DriverRegister() {
   };
 
   return (
-    <div className="container mx-auto flex justify-center py-10">
-      <Card className="w-full max-w-md">
+    <div className="container mx-auto py-10 max-w-2xl">
+      <PageHeader
+        title="Register as Driver"
+        description="Complete your driver profile to start accepting rides"
+        icon={<Car className="h-6 w-6 text-white" />}
+      />
+      <Card className="w-full">
         <CardHeader>
-          <CardTitle>Register as Driver</CardTitle>
+          <CardTitle>Driver Details</CardTitle>
           <CardDescription>
-            Complete your driver profile to start accepting rides
+            Enter your license and vehicle information
           </CardDescription>
         </CardHeader>
         <CardContent>

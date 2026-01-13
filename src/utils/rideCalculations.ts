@@ -4,15 +4,15 @@
  */
 
 export interface Coordinates {
-    lat: number;
-    lng: number;
+  lat: number;
+  lng: number;
 }
 
 export interface RideEstimate {
-    distance: number; // in kilometers
-    duration: string; // formatted duration string
-    durationMinutes: number; // duration in minutes
-    fare: number; // estimated fare in currency units
+  distance: number; // in kilometers
+  duration: string; // formatted duration string
+  durationMinutes: number; // duration in minutes
+  fare: number; // estimated fare in currency units
 }
 
 /**
@@ -22,31 +22,31 @@ export interface RideEstimate {
  * @returns Distance in kilometers
  */
 export function calculateDistance(
-    coord1: Coordinates,
-    coord2: Coordinates
+  coord1: Coordinates,
+  coord2: Coordinates
 ): number {
-    const R = 6371; // Earth's radius in kilometers
-    const dLat = toRadians(coord2.lat - coord1.lat);
-    const dLng = toRadians(coord2.lng - coord1.lng);
+  const R = 6371; // Earth's radius in kilometers
+  const dLat = toRadians(coord2.lat - coord1.lat);
+  const dLng = toRadians(coord2.lng - coord1.lng);
 
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRadians(coord1.lat)) *
-        Math.cos(toRadians(coord2.lat)) *
-        Math.sin(dLng / 2) *
-        Math.sin(dLng / 2);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRadians(coord1.lat)) *
+      Math.cos(toRadians(coord2.lat)) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
 
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c;
 
-    return Number(distance.toFixed(2));
+  return Number(distance.toFixed(2));
 }
 
 /**
  * Convert degrees to radians
  */
 function toRadians(degrees: number): number {
-    return degrees * (Math.PI / 180);
+  return degrees * (Math.PI / 180);
 }
 
 /**
@@ -56,11 +56,11 @@ function toRadians(degrees: number): number {
  * @returns Duration in minutes
  */
 export function estimateDuration(distance: number): number {
-    const averageSpeed = 30; // km/h
-    const durationHours = distance / averageSpeed;
-    const durationMinutes = Math.ceil(durationHours * 60);
+  const averageSpeed = 30; // km/h
+  const durationHours = distance / averageSpeed;
+  const durationMinutes = Math.ceil(durationHours * 60);
 
-    return durationMinutes;
+  return durationMinutes;
 }
 
 /**
@@ -69,42 +69,43 @@ export function estimateDuration(distance: number): number {
  * @returns Formatted string (e.g., "15 mins", "1 hr 30 mins")
  */
 export function formatDuration(minutes: number): string {
-    if (minutes < 60) {
-        return `${minutes} min${minutes !== 1 ? "s" : ""}`;
-    }
+  if (minutes < 60) {
+    return `${minutes} min${minutes !== 1 ? "s" : ""}`;
+  }
 
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
 
-    if (remainingMinutes === 0) {
-        return `${hours} hr${hours !== 1 ? "s" : ""}`;
-    }
+  if (remainingMinutes === 0) {
+    return `${hours} hr${hours !== 1 ? "s" : ""}`;
+  }
 
-    return `${hours} hr${hours !== 1 ? "s" : ""} ${remainingMinutes} min${remainingMinutes !== 1 ? "s" : ""
-        }`;
+  return `${hours} hr${hours !== 1 ? "s" : ""} ${remainingMinutes} min${
+    remainingMinutes !== 1 ? "s" : ""
+  }`;
 }
 
 /**
  * Calculate fare estimate based on distance and duration
  * Pricing logic:
- * - Base fare: $50
- * - Per kilometer: $20
+ * - Base fare: $30
+ * - Per kilometer: $10
  * - Per minute: $5
  * @param distance Distance in kilometers
  * @param durationMinutes Duration in minutes
  * @returns Estimated fare
  */
 export function calculateFare(
-    distance: number,
-    durationMinutes: number
+  distance: number,
+  durationMinutes: number
 ): number {
-    const baseFare = 50;
-    const perKilometer = 20;
-    const perMinute = 5;
+  const baseFare = 30;
+  const perKilometer = 10;
+  const perMinute = 5;
 
-    const fare = baseFare + distance * perKilometer + durationMinutes * perMinute;
+  const fare = baseFare + distance * perKilometer + durationMinutes * perMinute;
 
-    return Number(fare.toFixed(2));
+  return Number(fare.toFixed(2));
 }
 
 /**
@@ -114,18 +115,18 @@ export function calculateFare(
  * @returns Complete ride estimate with distance, duration, and fare
  */
 export function getRideEstimate(
-    pickupCoords: Coordinates,
-    dropoffCoords: Coordinates
+  pickupCoords: Coordinates,
+  dropoffCoords: Coordinates
 ): RideEstimate {
-    const distance = calculateDistance(pickupCoords, dropoffCoords);
-    const durationMinutes = estimateDuration(distance);
-    const duration = formatDuration(durationMinutes);
-    const fare = calculateFare(distance, durationMinutes);
+  const distance = calculateDistance(pickupCoords, dropoffCoords);
+  const durationMinutes = estimateDuration(distance);
+  const duration = formatDuration(durationMinutes);
+  const fare = calculateFare(distance, durationMinutes);
 
-    return {
-        distance,
-        duration,
-        durationMinutes,
-        fare,
-    };
+  return {
+    distance,
+    duration,
+    durationMinutes,
+    fare,
+  };
 }

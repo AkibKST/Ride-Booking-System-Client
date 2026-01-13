@@ -14,6 +14,8 @@ import {
   useApprovedSuspendToggleMutation,
   useGetDriversQuery,
 } from "@/redux/features/driver/driver.api";
+import PageHeader from "@/components/PageHeader";
+import { Car } from "lucide-react";
 
 export default function DriverManagement() {
   const { data: drivers, isLoading } = useGetDriversQuery({});
@@ -37,7 +39,11 @@ export default function DriverManagement() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Driver Management</h1>
+      <PageHeader
+        title="Driver Management"
+        description="Manage all drivers, approvals, and account status"
+        icon={<Car className="h-6 w-6 text-white" />}
+      />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -59,11 +65,10 @@ export default function DriverManagement() {
                 <TableCell>{driver?.user_id?.role}</TableCell>
                 <TableCell>
                   <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      driver.isActive === "false"
+                    className={`px-2 py-1 rounded-full text-xs ${driver.isActive === "false"
                         ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                         : "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                    }`}
+                      }`}
                   >
                     {driver.isApproved === "false" ? "Blocked" : "Approved"}
                   </span>

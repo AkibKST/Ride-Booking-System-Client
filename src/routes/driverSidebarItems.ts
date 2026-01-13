@@ -1,5 +1,5 @@
 import type { ISidebarItem } from "@/types";
-import { Car, History, LayoutDashboard, Navigation, User } from "lucide-react";
+import { Car, History, LayoutDashboard, Navigation, User, Settings } from "lucide-react";
 
 export const driverSidebarItems: ISidebarItem[] = [
     {
@@ -34,6 +34,11 @@ export const driverSidebarItems: ISidebarItem[] = [
                 title: "Profile",
                 url: "/driver/profile",
                 icon: User,
+            },
+            {
+                title: "Settings",
+                url: "/driver/settings",
+                icon: Settings,
             },
         ],
     },

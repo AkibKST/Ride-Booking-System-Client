@@ -20,6 +20,7 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import RideMapPreview from "@/components/RideMapPreview";
 import LocationAddress from "@/components/LocationAddress";
+import PageHeader from "@/components/PageHeader";
 
 const statusProgression = ["accepted", "picked_up", "in_transit", "completed"];
 const statusLabels = {
@@ -159,15 +160,18 @@ export default function ActiveRide() {
   const riderInfo = typeof ride.userId === "object" ? ride.userId : null;
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Active Ride</h1>
-        <Button variant="destructive" onClick={handleSOS} className="gap-2">
-          <AlertTriangle className="h-4 w-4" />
-          SOS Emergency
-        </Button>
-      </div>
-
+    <div className="container mx-auto p-4 space-y-6">
+      <PageHeader
+        title="Active Ride"
+        description="Manage your current ongoing ride"
+        icon={<Navigation className="h-6 w-6 text-white" />}
+        action={
+          <Button variant="destructive" onClick={handleSOS} className="gap-2 shadow-lg">
+            <AlertTriangle className="h-4 w-4" />
+            SOS Emergency
+          </Button>
+        }
+      />
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Ride Details */}
         <Card className="lg:col-span-1">

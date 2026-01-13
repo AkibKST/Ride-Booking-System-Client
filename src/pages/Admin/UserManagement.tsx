@@ -13,10 +13,12 @@ import {
 } from "@/redux/features/user/userApi";
 import { toast } from "sonner";
 import type { IUser } from "@/types";
+import PageHeader from "@/components/PageHeader";
+import { Users } from "lucide-react";
 
 export default function UserManagement() {
   const { data: users, isLoading } = useGetAllUsersQuery({});
-  console.log(users);
+
   const [updateUserStatus] = useUpdateUserStatusMutation();
 
   const handleStatusChange = async (user: IUser, checked: boolean) => {
@@ -36,7 +38,11 @@ export default function UserManagement() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">User Management</h1>
+      <PageHeader
+        title="User Management"
+        description="Manage all users and their account status"
+        icon={<Users className="h-6 w-6 text-white" />}
+      />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -56,11 +62,10 @@ export default function UserManagement() {
                 <TableCell>{user.role}</TableCell>
                 <TableCell>
                   <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      user.isActive === "BLOCKED"
+                    className={`px-2 py-1 rounded-full text-xs ${user.isActive === "BLOCKED"
                         ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                         : "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                    }`}
+                      }`}
                   >
                     {user.isActive === "BLOCKED" ? "Blocked" : "Active"}
                   </span>
