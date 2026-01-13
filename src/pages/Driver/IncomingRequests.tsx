@@ -44,7 +44,11 @@ export default function IncomingRequests() {
   const handleAccept = async (rideId: string) => {
     try {
       setProcessingRideId(rideId);
-      await acceptRide(rideId).unwrap();
+
+      const result = await acceptRide(rideId).unwrap();
+
+      console.log("Accept Ride Response:", result);
+
       toast.success("Ride Accepted! Navigating to active ride...");
       navigate(`/driver/active-ride/${rideId}`);
     } catch (err: any) {

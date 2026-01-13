@@ -94,6 +94,7 @@ export default function RideHistory() {
                             <TableHeader>
                                 <TableRow>
                                     <TableHead>Date</TableHead>
+                                    <TableHead>User/Driver</TableHead>
                                     <TableHead>Pickup</TableHead>
                                     <TableHead>Dropoff</TableHead>
                                     <TableHead>Fare</TableHead>
@@ -108,10 +109,24 @@ export default function RideHistory() {
                                             <TableCell>
                                                 {format(new Date(ride.createdAt), "PP p")}
                                             </TableCell>
-                                            <TableCell className="max-w-[200px] truncate">
+                                            <TableCell>
+                                                <div className="flex flex-col">
+                                                    {ride.driverId && (
+                                                        <span className="text-sm text-muted-foreground">
+                                                            Driver: <span className="font-medium text-foreground">{ride.driverId.name || "Unknown"}</span>
+                                                        </span>
+                                                    )}
+                                                    {ride.userId && (
+                                                        <span className="text-sm text-muted-foreground">
+                                                            User: <span className="font-medium text-foreground">{ride.userId.name || "Unknown"}</span>
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="max-w-[150px] truncate">
                                                 {getPickupAddress(ride)}
                                             </TableCell>
-                                            <TableCell className="max-w-[200px] truncate">
+                                            <TableCell className="max-w-[150px] truncate">
                                                 {getDropoffAddress(ride)}
                                             </TableCell>
                                             <TableCell>৳{ride.totalFare || ride.fare || "0"}</TableCell>

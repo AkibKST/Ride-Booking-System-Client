@@ -37,6 +37,9 @@ const formSchema = z.object({
   dropoffLocation: z.string().min(2, {
     message: "Dropoff location must be at least 2 characters.",
   }),
+  distance: z.number().optional(),
+  fare: z.number().optional(),
+  duration: z.string().optional(),
   status: z
     .enum(["requested", "accepted", "in_progress", "completed", "cancelled"])
     .default("requested"),
@@ -51,6 +54,9 @@ export default function RequestRide() {
     defaultValues: {
       pickupLocation: "",
       dropoffLocation: "",
+      distance: 0,
+      fare: 0,
+      duration: "",
     },
   });
 
@@ -95,10 +101,14 @@ export default function RequestRide() {
     if (pickupCoords && dropoffCoords) {
       const estimate = getRideEstimate(pickupCoords, dropoffCoords);
       setRideEstimate(estimate);
+      // Set form values with ride estimate data
+      form.setValue("distance", estimate.distance);
+      form.setValue("fare", estimate.fare);
+      form.setValue("duration", estimate.duration);
     } else {
       setRideEstimate(null);
     }
-  }, [pickupCoords, dropoffCoords]);
+  }, [pickupCoords, dropoffCoords, form]);
   // ------------------------------------------------------------
 
   // ------------------Transform Data for post in backend-----------------------
@@ -139,12 +149,12 @@ export default function RequestRide() {
         pickupLocation: string;
         dropoffLocation: string;
         status?:
-        | "requested"
-        | "accepted"
-        | "in_progress"
-        | "completed"
-        | "cancelled"
-        | undefined;
+          | "requested"
+          | "accepted"
+          | "in_progress"
+          | "completed"
+          | "cancelled"
+          | undefined;
       },
       fare: number,
       distance: number,
@@ -175,18 +185,23 @@ export default function RequestRide() {
     // prepare ride data
     const rideData = transformRideData(
       values,
-      rideEstimate?.fare || 0,
-      rideEstimate?.distance || 0,
-      rideEstimate?.duration || "0 mins",
+      rideEstimate ? rideEstimate.fare : 0,
+      rideEstimate ? rideEstimate.distance : 0,
+      rideEstimate ? rideEstimate.duration : "",
       userId,
       pickupCoords,
       dropoffCoords
     );
-    console.log("Ride Data:", rideData);
+
+    console.log("=== RIDE REQUEST DEBUG ===");
+    console.log("Ride Estimate:", rideEstimate);
+    console.log("Prepared Ride Data:", rideData);
+    console.log("Fare being sent:", rideData.fare);
 
     // call add ride request mutation
     try {
       const res = await addRideRequest(rideData).unwrap();
+      console.log("Backend Response:", res);
       toast.success(`Ride requested successfully!`);
       form.reset();
       if (res?.data?._id) {
@@ -401,9 +416,21 @@ export default function RequestRide() {
                 )}
               />
 
-              <Button type="submit" className="w-full">
-                Request Ride
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={!rideEstimate || !rideEstimate.fare}
+              >
+                {!rideEstimate
+                  ? "Select locations to continue"
+                  : "Request Ride"}
               </Button>
+
+              {!rideEstimate && (
+                <p className="text-sm text-muted-foreground text-center">
+                  Please select both pickup and dropoff locations on the map
+                </p>
+              )}
             </form>
           </Form>
         </CardContent>

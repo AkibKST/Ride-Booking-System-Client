@@ -8,6 +8,17 @@ import {
   useGetMyDriverProfileQuery,
 } from "@/redux/features/driver/driver.api";
 import { toast } from "sonner";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+} from "recharts";
 
 export default function DriverDashboard() {
   // Fetch current driver profile data
@@ -125,6 +136,66 @@ export default function DriverDashboard() {
           <CardContent>
             <div className="text-2xl font-bold">142</div>
             <p className="text-xs text-muted-foreground">+12 since last week</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Analytics Charts */}
+      <div className="grid gap-6 md:grid-cols-2">
+        <Card className="col-span-1">
+          <CardHeader>
+            <CardTitle>Weekly Earnings</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={[
+                  { name: "Mon", amount: 120 },
+                  { name: "Tue", amount: 150 },
+                  { name: "Wed", amount: 180 },
+                  { name: "Thu", amount: 140 },
+                  { name: "Fri", amount: 200 },
+                  { name: "Sat", amount: 250 },
+                  { name: "Sun", amount: 190 },
+                ]}>
+                  <defs>
+                    <linearGradient id="colorEarnings" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
+                      <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Area type="monotone" dataKey="amount" stroke="#10b981" fillOpacity={1} fill="url(#colorEarnings)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="col-span-1">
+          <CardHeader>
+            <CardTitle>Monthly Rides</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={[
+                  { name: "Week 1", rides: 25 },
+                  { name: "Week 2", rides: 30 },
+                  { name: "Week 3", rides: 28 },
+                  { name: "Week 4", rides: 35 },
+                ]}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="rides" fill="#6366f1" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </CardContent>
         </Card>
       </div>

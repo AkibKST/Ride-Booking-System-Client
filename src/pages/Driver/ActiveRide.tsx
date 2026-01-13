@@ -11,6 +11,7 @@ import {
 import { AlertTriangle, MapPin, Navigation, Phone, User } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate, useParams } from "react-router";
+import { useEffect } from "react";
 import {
   useGetActiveRideQuery,
   useGetRideQuery,
@@ -56,6 +57,18 @@ export default function ActiveRide() {
   const isLoading = rideId ? isLoadingSpecific : isLoadingActive;
   const error = rideId ? specificError : activeError;
 
+  // Debug logging
+  useEffect(() => {
+    console.log("Active Ride Debug:", {
+      activeRide,
+      activeError,
+      isLoadingActive,
+      rideId,
+      specificRide,
+      specificError,
+    });
+  }, [activeRide, activeError, isLoadingActive, rideId, specificRide, specificError]);
+
   const [updateRideStatus, { isLoading: isUpdating }] =
     useUpdateRideStatusMutation();
 
@@ -80,8 +93,7 @@ export default function ActiveRide() {
         }).unwrap();
 
         toast.success(
-          `Status updated to: ${
-            statusLabels[nextStatus as keyof typeof statusLabels]
+          `Status updated to: ${statusLabels[nextStatus as keyof typeof statusLabels]
           }`
         );
 
@@ -190,7 +202,7 @@ export default function ActiveRide() {
                     Pickup
                   </p>
                   {ride.pickupLocation?.latitude &&
-                  ride.pickupLocation?.longitude ? (
+                    ride.pickupLocation?.longitude ? (
                     <LocationAddress
                       latitude={ride.pickupLocation.latitude}
                       longitude={ride.pickupLocation.longitude}
@@ -210,7 +222,7 @@ export default function ActiveRide() {
                     Dropoff
                   </p>
                   {ride.dropLocation?.latitude &&
-                  ride.dropLocation?.longitude ? (
+                    ride.dropLocation?.longitude ? (
                     <LocationAddress
                       latitude={ride.dropLocation.latitude}
                       longitude={ride.dropLocation.longitude}
@@ -258,8 +270,8 @@ export default function ActiveRide() {
               {isUpdating
                 ? "Updating..."
                 : nextStatusLabel
-                ? `Mark as ${nextStatusLabel}`
-                : "Completed"}
+                  ? `Mark as ${nextStatusLabel}`
+                  : "Completed"}
             </Button>
           </CardFooter>
         </Card>
@@ -304,9 +316,8 @@ export default function ActiveRide() {
                 {statusProgression.map((status, index) => (
                   <div
                     key={status}
-                    className={`flex-1 h-2 rounded-full transition-colors ${
-                      index <= currentStatusIndex ? "bg-primary" : "bg-muted"
-                    }`}
+                    className={`flex-1 h-2 rounded-full transition-colors ${index <= currentStatusIndex ? "bg-primary" : "bg-muted"
+                      }`}
                   />
                 ))}
               </div>

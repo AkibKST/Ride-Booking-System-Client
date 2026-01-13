@@ -57,7 +57,10 @@ export const router = createBrowserRouter([
         path: "rides/:id",
       },
       {
-        Component: withAuth(RequestRide, role.user as TRole),
+        Component: withAuth(
+          RequestRide,
+          (role.rider as TRole) || (role.user as TRole)
+        ),
         path: "request-ride",
       },
       {
@@ -109,7 +112,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    Component: withAuth(DashboardLayout, role.user as TRole), // Protected route for user
+    Component: DashboardLayout,
     path: "/user",
     children: [
       { index: true, element: <Navigate to="/user/dashboard" /> },
@@ -123,6 +126,7 @@ export const router = createBrowserRouter([
     path: "/rider",
     children: [
       { index: true, element: <Navigate to="/rider/dashboard" /> },
+      { path: "request-ride", Component: RequestRide },
       { path: "ride-history", Component: RideHistory },
       { path: "active-ride/:rideId?", Component: ActiveRideForRider },
       ...generateRoutes(riderSidebarItems),
@@ -140,7 +144,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    Component: withAuth(Payment, role.user as TRole), // Protected route for user/rider
+    Component: withAuth(Payment, role.rider as TRole), // Protected route for user/rider
     path: "/payment/:rideId",
   },
   {

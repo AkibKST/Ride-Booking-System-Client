@@ -11,6 +11,7 @@ import {
 import { AlertTriangle, MapPin, Navigation, Phone, User } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate, useParams } from "react-router";
+import { useEffect } from "react";
 import {
   useGetActiveRideQuery,
   useGetRideQuery,
@@ -43,9 +44,20 @@ export default function ActiveRideForRider() {
     pollingInterval: 5000,
   });
 
+  // Determine which ride data to use
   const ride = rideId ? specificRide : activeRide;
   const isLoading = rideId ? isLoadingSpecific : isLoadingActive;
   const error = rideId ? specificError : activeError;
+
+  // Watch for ride completion
+  useEffect(() => {
+    if (ride?.status === "completed") {
+      toast.success("Ride Completed! Redirecting to payment...");
+      setTimeout(() => {
+        navigate(`/payment/${ride._id}`);
+      }, 10000);
+    }
+  }, [ride?.status, ride?._id, navigate]);
 
   const handleSOS = () => {
     toast.error("SOS Alert Sent! Emergency contacts notified.");
@@ -81,8 +93,13 @@ export default function ActiveRideForRider() {
     );
   }
 
-  // Get rider info - handle both object and string userId
-  const riderInfo = typeof ride.userId === "object" ? ride.userId : null;
+  // // Get rider info - handle both object and string userId
+  // const riderInfo = typeof ride.userId === "object" ? ride.userId : null;
+
+  //Get driver info - handle both object and string userId
+  const driverInfo =
+    typeof ride.driverId === "object" ? (ride.driverId as any) : null;
+  console.log(driverInfo);
 
   return (
     <div className="space-y-6">
@@ -98,7 +115,7 @@ export default function ActiveRideForRider() {
         {/* Ride Details */}
         <Card className="lg:col-span-1">
           <CardHeader>
-            <CardTitle>Rider Details</CardTitle>
+            <CardTitle>Driver Details</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="flex items-center gap-4">
@@ -107,13 +124,13 @@ export default function ActiveRideForRider() {
               </div>
               <div className="flex-1">
                 <p className="font-bold text-lg">
-                  {riderInfo?.name || "Rider"}
+                  {driverInfo?.user_id?.name || "Driver"}
                 </p>
                 <p className="text-muted-foreground text-sm">
-                  {riderInfo?.email || ""}
+                  {driverInfo?.user_id?.email || ""}
                 </p>
               </div>
-              {riderInfo?.phone && (
+              {driverInfo?.user_id?.phone && (
                 <Button size="icon" variant="outline" className="ml-auto">
                   <Phone className="h-4 w-4" />
                 </Button>
