@@ -43,7 +43,7 @@ import { z } from "zod";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import { useGetMyDriverProfileQuery } from "@/redux/features/driver/driver.api";
 import { Spinner } from "@/components/ui/spinner";
-import { User, Mail, Phone, Shield, Car, MapPin } from "lucide-react";
+import { User, Mail, Phone, Shield, Car } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 
 /* ==================================================================
@@ -157,7 +157,7 @@ export default function Profile() {
      * @param values - Password change data from form
      * 
      * TODO: Integrate with backend API to change password
-     * Current implementation: Logs data, resets form, shows success
+     * Current implementation: Resets form and shows success
      */
     function onPasswordSubmit(values: z.infer<typeof passwordSchema>) {
         console.log("Password Change Request:", {
@@ -173,6 +173,7 @@ export default function Profile() {
 
         toast.success("Password changed successfully!");
         passwordForm.reset();
+        void values; // Use values to satisfy linter
     }
 
     /* ================================================================
